@@ -1,9 +1,9 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
-export default function HomeScreen() {
+export default function WorkoutScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>欢迎使用 Saikuru</Text>
+      <Text style={styles.title}>我的</Text>
     </View>
   );
 }

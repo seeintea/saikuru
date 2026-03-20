@@ -10,7 +10,9 @@
     "web": "expo start --web",
     "lint": "expo lint",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "typecheck": "tsc --noEmit",
+    "skills:install": "npx skills experimental_install"
   },
   "dependencies": {
     "@expo/html-elements": "0.10.1",

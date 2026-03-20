@@ -41,3 +41,7 @@ app-example
 # generated native folders
 /ios
 /android
+
+# Skills (restore with `npx skills experimental_install`)
+.agents/
+.claude/skills/

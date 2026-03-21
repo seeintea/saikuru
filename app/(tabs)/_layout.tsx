@@ -29,17 +29,23 @@ function TabBarButton({ label, icon: Icon, isActive, onPress }: TabBarButtonProp
     <TouchableOpacity onPress={onPress} style={styles.tab} activeOpacity={0.7}>
       <View
         style={[
-          styles.iconContainer,
-          { backgroundColor: isActive ? 'rgba(64, 64, 64, 0.5)' : 'transparent' },
+          styles.activeContainer,
+          {
+            backgroundColor: isActive
+              ? isDark
+                ? 'rgba(163, 255, 0, 0.15)'
+                : 'rgba(163, 255, 0, 0.2)'
+              : 'transparent',
+          },
         ]}
       >
-        <Icon size={28} color={getTabBarColor()} strokeWidth={2.5} />
+        <Icon size={24} color={getTabBarColor()} strokeWidth={2.5} />
+        <Text
+          style={[styles.label, { color: getTabBarColor(), fontWeight: isActive ? '600' : '500' }]}
+        >
+          {label}
+        </Text>
       </View>
-      <Text
-        style={[styles.label, { color: getTabBarColor(), fontWeight: isActive ? '600' : '500' }]}
-      >
-        {label}
-      </Text>
     </TouchableOpacity>
   );
 }
@@ -93,11 +99,11 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
+    alignItems: 'center',
   },
   tabBar: {
-    marginHorizontal: 16,
     marginBottom: 8,
-    borderRadius: 24,
+    borderRadius: 100,
     ...Platform.select({
       ios: {
         shadowColor: '#000',
@@ -112,24 +118,25 @@ const styles = StyleSheet.create({
   },
   tabContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 8,
+    paddingVertical: 4,
+    paddingHorizontal: 6,
+    gap: 4,
   },
   tab: {
-    flex: 1,
     alignItems: 'center',
-    paddingVertical: 8,
-    marginHorizontal: 4,
+    paddingVertical: 4,
   },
-  iconContainer: {
-    marginBottom: 4,
-    borderRadius: 9999,
-    padding: 8,
+  activeContainer: {
+    alignItems: 'center',
+    borderRadius: 100,
+    paddingVertical: 8,
+    paddingHorizontal: 36,
   },
   label: {
-    fontSize: 12,
+    fontSize: 10,
+    paddingTop: 6,
   },
 });
 

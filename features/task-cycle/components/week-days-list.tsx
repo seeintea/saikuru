@@ -5,6 +5,7 @@ import { STATUS_COLORS } from '@/features/task-cycle/constants';
 
 interface WeekDaysListProps {
   weekData: WeeklyTaskData;
+  daysToShow?: number;
   onDayPress?: (day: DailyTaskData) => void;
 }
 
@@ -33,12 +34,36 @@ const DayItem = ({ day }: { day: DailyTaskData }) => {
   );
 };
 
-export default function WeekDaysList({ weekData }: WeekDaysListProps) {
+export default function WeekDaysList({ weekData, daysToShow = 7 }: WeekDaysListProps) {
+  // 找到今天在数组中的索引
+  let todayIndex = -1;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  for (let i = 0; i < weekData.days.length; i++) {
+    const dayDate = new Date(weekData.days[i].date);
+    dayDate.setHours(0, 0, 0, 0);
+    if (dayDate.getTime() === today.getTime()) {
+      todayIndex = i;
+      break;
+    }
+  }
+
+  let daysToDisplay;
+  if (todayIndex !== -1) {
+    // 显示从今天往前数 (daysToShow - 1) 天到今天的记录
+    const startIndex = Math.max(0, todayIndex - (daysToShow - 1));
+    daysToDisplay = weekData.days.slice(startIndex, todayIndex + 1);
+  } else {
+    // 如果没有找到今天，默认显示最后几天
+    daysToDisplay = weekData.days.slice(-daysToShow);
+  }
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>本周每日记录</Text>
+      <Text style={styles.title}>{daysToShow < 7 ? '最近记录' : '本周每日记录'}</Text>
       <View style={styles.list}>
-        {weekData.days.map((day, index) => (
+        {daysToDisplay.map((day, index) => (
           <DayItem key={index} day={day} />
         ))}
       </View>

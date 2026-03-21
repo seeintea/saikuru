@@ -54,14 +54,27 @@ const createWeekData = (weekNumber: number, baseDate: Date): WeeklyTaskData => {
         return createDailyData(date, 'missed');
       }
     } else if (weekNumber === currentWeek) {
-      // 当前周
-      if (index < 2) {
-        return createDailyData(date, 'completed', 30 + index * 5);
-      } else if (index === 2) {
-        return createDailyData(date, 'missed');
-      } else if (index < 4) {
-        return createDailyData(date, 'completed', 25 + index * 3);
+      // 当前周 - 根据今天是星期几来设置已完成状态
+      const today = new Date();
+      const todayDay = today.getDay(); // 0 是周日，1 是周一...6 是周六
+
+      // 将今天的 0-6 映射到周一开始的 0-6 索引
+      const todayIndex = todayDay === 0 ? 6 : todayDay - 1;
+
+      // 今天之前的天应该是已完成或未完成状态
+      if (index < todayIndex) {
+        if (index < 2) {
+          return createDailyData(date, 'completed', 30 + index * 5);
+        } else if (index === 2) {
+          return createDailyData(date, 'missed');
+        } else {
+          return createDailyData(date, 'completed', 25 + index * 3);
+        }
+      } else if (index === todayIndex) {
+        // 今天
+        return createDailyData(date, 'pending');
       } else {
+        // 未来的天
         return createDailyData(date, 'pending');
       }
     } else {

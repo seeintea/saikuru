@@ -1,16 +1,14 @@
+import { getToday } from '@/utils/date-utils';
 import { useState } from 'react';
-import { StyleSheet, ScrollView, View } from 'react-native';
-import PageHeader from './components/page-header';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import CurrentWeekCard from './components/current-week-card';
-import WeekDaysList from './components/week-days-list';
-import TaskCycleGrid from './components/task-cycle-grid';
-import StatsOverview from './components/stats-overview';
-import MonthlyCalendar from './components/monthly-calendar';
 import Legend from './components/legend';
 import LogWorkoutModal from './components/log-workout-modal';
-import { createCycleData, updateDailyData } from './utils/mock-data';
-import { getToday } from '@/utils/date-utils';
+import MonthlyCalendar from './components/monthly-calendar';
+import PageHeader from './components/page-header';
+import WeekDaysList from './components/week-days-list';
 import { DailyTaskData } from './types';
+import { createCycleData, updateDailyData } from './utils/mock-data';
 
 export default function TaskCyclePage() {
   const [cycleData, setCycleData] = useState(createCycleData());
@@ -60,11 +58,10 @@ export default function TaskCyclePage() {
       <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false}>
         <PageHeader onLogWorkout={handleLogWorkout} />
         <CurrentWeekCard weekData={currentWeekData} />
-        <WeekDaysList weekData={currentWeekData} />
-        <StatsOverview cycleData={cycleData} />
-        <TaskCycleGrid cycleData={cycleData} onDayPress={handleDayPress} />
+        {/* <TaskCycleGrid cycleData={cycleData} onDayPress={handleDayPress} /> */}
         <MonthlyCalendar allDays={allDays} onDayPress={handleCalendarDayPress} />
         <Legend />
+        <WeekDaysList weekData={currentWeekData} daysToShow={3} />
       </ScrollView>
 
       <LogWorkoutModal

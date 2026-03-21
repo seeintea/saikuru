@@ -12,7 +12,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "typecheck": "tsc --noEmit",
-    "skills:install": "npx skills experimental_install"
+    "skills": "node ./scripts/skills.mjs"
   },
   "dependencies": {
     "@expo/html-elements": "0.10.1",

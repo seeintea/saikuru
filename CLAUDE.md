@@ -17,9 +17,11 @@ type: project
 ## Testing & Code Quality
 
 ### Per Task Check
+
 - **TypeScript check**: `pnpm run typecheck`
 
 ### Pre-Commit Check
+
 - **Format code**: `pnpm run format`
 - **Check code format**: `pnpm run format:check`
 - **Lint code**: `pnpm run lint`

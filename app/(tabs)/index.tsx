@@ -1,23 +1,4 @@
-import { View, Text, StyleSheet } from 'react-native';
+import TaskCyclePage from '@/features/task-cycle';
 
-export default function HomeScreen() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>欢迎使用 Saikuru</Text>
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#151718',
-  },
-  title: {
-    color: '#A3FF00',
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
-});
+// 这是路由文件，只负责将路由导入到正确的 feature 页面
+export default TaskCyclePage;

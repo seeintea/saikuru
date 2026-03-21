@@ -48,11 +48,12 @@ type: project
 - Avoid overcomplicating with complex state management libraries
 - Keep state logic simple and predictable
 
-## Routing
+## Project Structure & Routing
 
-- Use Expo Router for navigation
-- File-system based routing structure
-- Custom bottom tab navigation support
+- **app/ directory**: Only contains routing logic (minimal wrapper components), does not handle page content
+- **features/ directory**: Contains complete feature modules with their own `components/`, `utils/`, and `types/`
+- **Naming convention**: Use kebab-case for filenames (e.g., `current-week-card.tsx`)
+- \*\*Use Expo Router for navigation with file-system based routing structure
 
 ## Debugging
 

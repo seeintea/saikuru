@@ -14,6 +14,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#151718',
+    paddingBottom: 100, // 为底部悬浮 tab 预留空间
   },
   title: {
     color: '#A3FF00',

@@ -55,7 +55,11 @@ export default function TaskCyclePage() {
 
   return (
     <View style={styles.container}>
-      <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={styles.scrollContainer}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollContent}
+      >
         <PageHeader onLogWorkout={handleLogWorkout} />
         <CurrentWeekCard weekData={currentWeekData} />
         {/* <TaskCycleGrid cycleData={cycleData} onDayPress={handleDayPress} /> */}
@@ -80,5 +84,8 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     flex: 1,
+  },
+  scrollContent: {
+    paddingBottom: 100, // 为底部悬浮 tab 留出空间
   },
 });

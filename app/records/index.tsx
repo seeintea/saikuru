@@ -1,9 +1,9 @@
-import { useLocalSearchParams } from 'expo-router';
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
-import { createCycleData } from '@/features/task-cycle/utils/mock-data';
-import { DailyTaskData } from '@/features/task-cycle/types';
-import { getDayName, isToday } from '@/utils/date-utils';
 import { STATUS_COLORS } from '@/features/task-cycle/constants';
+import { DailyTaskData } from '@/features/task-cycle/types';
+import { createCycleData } from '@/features/task-cycle/utils/mock-data';
+import { getDayName, isToday } from '@/utils/date-utils';
+import { useLocalSearchParams } from 'expo-router';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
 const DayItem = ({ day }: { day: DailyTaskData }) => {
   const isTodayDate = isToday(day.date);
@@ -18,9 +18,7 @@ const DayItem = ({ day }: { day: DailyTaskData }) => {
         <Text style={[styles.dayNumber, isTodayDate && styles.todayText]}>
           {day.date.getDate()}
         </Text>
-        <Text style={styles.monthText}>
-          {day.date.getMonth() + 1}月
-        </Text>
+        <Text style={styles.monthText}>{day.date.getMonth() + 1}月</Text>
       </View>
       <View style={styles.statusSection}>
         <View style={[styles.statusDot, { backgroundColor: statusColor }]} />

@@ -4,22 +4,10 @@ export default function RecordsLayout() {
   return (
     <Stack
       screenOptions={{
-        headerStyle: {
-          backgroundColor: '#151718',
-        },
-        headerTintColor: '#A3FF00',
-        headerTitleStyle: {
-          fontSize: 18,
-          fontWeight: '600',
-        },
+        headerShown: false, // 隐藏这个 Stack 的 header，避免双重导航
       }}
     >
-      <Stack.Screen
-        name="index"
-        options={{
-          title: '锻炼记录',
-        }}
-      />
+      <Stack.Screen name="index" />
     </Stack>
   );
 }

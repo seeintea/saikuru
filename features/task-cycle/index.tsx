@@ -65,7 +65,11 @@ export default function TaskCyclePage() {
         {/* <TaskCycleGrid cycleData={cycleData} onDayPress={handleDayPress} /> */}
         <MonthlyCalendar allDays={allDays} onDayPress={handleCalendarDayPress} />
         <Legend />
-        <WeekDaysList weekData={currentWeekData} daysToShow={3} />
+        <WeekDaysList
+          weekData={currentWeekData}
+          cycleData={cycleData}
+          daysToShow={10}
+        />
       </ScrollView>
 
       <LogWorkoutModal

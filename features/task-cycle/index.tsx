@@ -1,6 +1,6 @@
 import { getToday } from '@/utils/date-utils';
 import { useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native';
 import CurrentWeekCard from './components/current-week-card';
 import Legend from './components/legend';
 import LogWorkoutModal from './components/log-workout-modal';
@@ -8,11 +8,32 @@ import MonthlyCalendar from './components/monthly-calendar';
 import PageHeader from './components/page-header';
 import WeekDaysList from './components/week-days-list';
 import { DailyTaskData } from './types';
-import { createCycleData, updateDailyData } from './utils/mock-data';
+import useDatabase from '@/hooks/use-database';
 
 export default function TaskCyclePage() {
-  const [cycleData, setCycleData] = useState(createCycleData());
   const [modalVisible, setModalVisible] = useState(false);
+  const { cycleData, isLoading, error, logWorkout } = useDatabase();
+
+  if (isLoading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#A3FF00" />
+        <Text style={styles.loadingText}>加载中...</Text>
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={styles.errorContainer}>
+        <Text style={styles.errorText}>出错了: {error.message}</Text>
+      </View>
+    );
+  }
+
+  if (!cycleData) {
+    return null;
+  }
 
   const currentWeekData = cycleData.weeks.find((w) => w.weekNumber === cycleData.currentWeek);
 
@@ -23,16 +44,12 @@ export default function TaskCyclePage() {
     setModalVisible(true);
   };
 
-  const handleSubmitLog = (duration: number, workoutType?: string, notes?: string) => {
+  const handleSubmitLog = async (duration: number, workoutType?: string, notes?: string) => {
     const today = getToday();
-    const updatedWeeks = cycleData.weeks.map((weekData) => {
-      if (weekData.weekNumber === cycleData.currentWeek) {
-        return updateDailyData(weekData, today, duration);
-      }
-      return weekData;
-    });
-    setCycleData((prev) => ({ ...prev, weeks: updatedWeeks }));
-    setModalVisible(false);
+    const success = await logWorkout(today, duration, workoutType, notes);
+    if (success) {
+      setModalVisible(false);
+    }
   };
 
   const handleCloseModal = () => {
@@ -101,5 +118,28 @@ const styles = StyleSheet.create({
   },
   componentWrapper: {
     marginTop: 16, // 统一的组件间距
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#151718',
+  },
+  loadingText: {
+    color: '#9BA1A6',
+    fontSize: 16,
+    marginTop: 12,
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#151718',
+    paddingHorizontal: 16,
+  },
+  errorText: {
+    color: '#FF6B6B',
+    fontSize: 16,
+    textAlign: 'center',
   },
 });

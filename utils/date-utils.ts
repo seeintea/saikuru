@@ -2,7 +2,7 @@ import { Platform } from 'react-native';
 
 // 获取当前周的开始和结束日期
 // 周一作为一周的第一天
-export const getCurrentWeekRange = (): { start: Date; end: Date } => {
+export const getCurrentWeekRange = (): { startDate: Date; endDate: Date } => {
   const now = new Date();
   const dayOfWeek = now.getDay(); // 0 是周日，1 是周一
   const mondayOffset = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
@@ -14,7 +14,16 @@ export const getCurrentWeekRange = (): { start: Date; end: Date } => {
   end.setDate(end.getDate() + 6);
   end.setHours(23, 59, 59, 999);
 
-  return { start, end };
+  return { startDate: start, endDate: end };
+};
+
+// 接受起始日期的版本
+export const getWeekRange = (startDate: Date): { startDate: Date; endDate: Date } => {
+  const end = new Date(startDate);
+  end.setDate(end.getDate() + 6);
+  end.setHours(23, 59, 59, 999);
+
+  return { startDate, endDate: end };
 };
 
 // 获取周几的名称（中文）
@@ -82,8 +91,15 @@ export const isToday = (date: Date): boolean => {
 };
 
 // 获取本周的7天日期数组（周一到周日）
-export const getWeekDays = (): Date[] => {
-  const { start } = getCurrentWeekRange();
+export const getWeekDays = (startDate?: Date): Date[] => {
+  let start: Date;
+  if (startDate) {
+    start = new Date(startDate);
+    start.setHours(0, 0, 0, 0);
+  } else {
+    const range = getCurrentWeekRange();
+    start = range.startDate;
+  }
   const days = [];
   for (let i = 0; i < 7; i++) {
     const date = new Date(start);

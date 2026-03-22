@@ -60,10 +60,10 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#1E1E1E',
     borderRadius: 16,
-    marginHorizontal: 16,
     padding: 16,
     borderWidth: 1,
     borderColor: '#3D3D3D',
+    marginHorizontal: 16,
   },
   header: {
     flexDirection: 'row',

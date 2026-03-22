@@ -150,20 +150,18 @@ export default function MonthlyCalendar({
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 8,
+    marginHorizontal: 16,
   },
   title: {
     color: '#ECEDEE',
     fontSize: 18,
     fontWeight: '600',
-    marginHorizontal: 8,
     marginBottom: 12,
   },
   calendarCard: {
     backgroundColor: '#1E1E1E',
     borderRadius: 16,
     padding: 16,
-    marginHorizontal: 8,
     borderWidth: 1,
     borderColor: '#3D3D3D',
   },

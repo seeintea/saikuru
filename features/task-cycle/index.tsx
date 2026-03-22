@@ -61,15 +61,22 @@ export default function TaskCyclePage() {
         contentContainerStyle={styles.scrollContent}
       >
         <PageHeader onLogWorkout={handleLogWorkout} />
-        <CurrentWeekCard weekData={currentWeekData} />
-        {/* <TaskCycleGrid cycleData={cycleData} onDayPress={handleDayPress} /> */}
-        <MonthlyCalendar allDays={allDays} onDayPress={handleCalendarDayPress} />
-        <Legend />
-        <WeekDaysList
-          weekData={currentWeekData}
-          cycleData={cycleData}
-          daysToShow={10}
-        />
+        <View style={styles.componentWrapper}>
+          <CurrentWeekCard weekData={currentWeekData} />
+        </View>
+        <View style={styles.componentWrapper}>
+          <MonthlyCalendar allDays={allDays} onDayPress={handleCalendarDayPress} />
+        </View>
+        <View style={styles.componentWrapper}>
+          <Legend />
+        </View>
+        <View style={styles.componentWrapper}>
+          <WeekDaysList
+            weekData={currentWeekData}
+            cycleData={cycleData}
+            daysToShow={10}
+          />
+        </View>
       </ScrollView>
 
       <LogWorkoutModal
@@ -91,5 +98,8 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     paddingBottom: 100, // 为底部悬浮 tab 留出空间
+  },
+  componentWrapper: {
+    marginTop: 16, // 统一的组件间距
   },
 });

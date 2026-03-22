@@ -84,7 +84,6 @@ export default function WeekDaysList({ weekData, cycleData, daysToShow = 10 }: W
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: 16,
-    marginTop: 16,
   },
   title: {
     color: '#ECEDEE',

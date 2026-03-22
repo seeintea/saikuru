@@ -65,7 +65,6 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     flex: 1,
-    paddingBottom: 100,
   },
   subtitle: {
     color: '#9BA1A6',

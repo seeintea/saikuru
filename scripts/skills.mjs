@@ -131,32 +131,8 @@ function install() {
   log('green', '✓ Skills added for Claude Code');
   console.log('');
 
-  // Step 3: Create .claude directory and settings files
-  log('yellow', 'Step 4: Configuring .claude/settings.json...');
-  const claudeDir = path.join(projectRoot, '.claude');
-
-  if (!fs.existsSync(claudeDir)) {
-    fs.mkdirSync(claudeDir, { recursive: true });
-  }
-
-  // settings.json (project-level settings, committed to git)
-  const settingsJsonPath = path.join(claudeDir, 'settings.json');
-  const settingsJsonContent = {
-    permissions: {
-      allow: ['Bash(pnpm run:*)'],
-    },
-  };
-
-  if (!fs.existsSync(settingsJsonPath)) {
-    fs.writeFileSync(settingsJsonPath, JSON.stringify(settingsJsonContent, null, 2));
-    log('green', '✓ Created .claude/settings.json');
-  } else {
-    log('blue', 'ℹ .claude/settings.json already exists');
-  }
-  console.log('');
-
-  // Step 4: Verify installation
-  log('yellow', 'Step 5: Verifying installation...');
+  // Step 3: Verify installation
+  log('yellow', 'Step 4: Verifying installation...');
   const listResult = runCommand('npx skills list --json', { silent: true });
   if (listResult.success && listResult.output) {
     try {
@@ -213,7 +189,7 @@ function showHelp() {
   console.log('  pnpm run skills <command>');
   console.log('');
   log('yellow', 'Commands:');
-  console.log('  install  - Install and configure skills for Claude Code');
+  console.log('  install  - Install skills for Claude Code');
   console.log('  list     - List installed skills');
   console.log('  check    - Check for skill updates');
   console.log('  update   - Update all skills to latest versions');

@@ -1,24 +1,18 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { TabScreenWrapper } from '@/components/tab-screen-wrapper';
+import { TabsMine } from '@/features/tabs-mine';
+import { StyleSheet } from 'react-native';
 
-export default function ShareScreen() {
+export default function MineScreen() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>我的</Text>
-    </View>
+    <TabScreenWrapper style={styles.container}>
+      <TabsMine />
+    </TabScreenWrapper>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#151718',
-    paddingBottom: 100, // 为底部悬浮 tab 预留空间
-  },
-  title: {
-    color: '#A3FF00',
-    fontSize: 24,
-    fontWeight: 'bold',
   },
 });

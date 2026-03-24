@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { type StyleProp, StyleSheet, View, type ViewStyle } from 'react-native';
+import { type StyleProp, type ViewStyle, StyleSheet, View } from 'react-native';
 
 interface TabScreenWrapperProps {
   children: ReactNode;

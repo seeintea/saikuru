@@ -24,9 +24,7 @@ const DayItem = ({ day }: { day: DailyTaskData }) => {
         <Text style={[styles.dayNumber, isTodayDate && styles.todayText]}>
           {day.date.getDate()}
         </Text>
-        <Text style={styles.monthText}>
-          {day.date.getMonth() + 1}月
-        </Text>
+        <Text style={styles.monthText}>{day.date.getMonth() + 1}月</Text>
       </View>
       <View style={styles.statusSection}>
         <View style={[styles.statusDot, { backgroundColor: statusColor }]} />

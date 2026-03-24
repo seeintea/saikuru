@@ -3,19 +3,34 @@ import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@/hooks/use-color-scheme';
-
-import { GluestackUIProvider, type ModeType } from '@/components/ui/gluestack-ui-provider';
-import '@/global.css';
+import { View } from 'react-native';
 
 export const unstable_settings = {
   anchor: '(tabs)',
+};
+
+// 简单的颜色配置
+const config = {
+  light: {
+    backgroundColor: '#F5F6F7',
+  },
+  dark: {
+    backgroundColor: '#0E0E0E',
+  },
 };
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
 
   return (
-    <GluestackUIProvider mode={colorScheme as ModeType}>
+    <View
+      style={{
+        flex: 1,
+        height: '100%',
+        width: '100%',
+        backgroundColor: config[colorScheme!].backgroundColor,
+      }}
+    >
       <Stack
         screenOptions={{
           headerStyle: {
@@ -32,12 +47,12 @@ export default function RootLayout() {
         <Stack.Screen
           name="records"
           options={{
-            title: '打卡记录', // 更通用的标题
-            headerShown: true, // 显示导航栏
+            title: '打卡记录',
+            headerShown: true,
           }}
         />
       </Stack>
       <StatusBar style="auto" />
-    </GluestackUIProvider>
+    </View>
   );
 }

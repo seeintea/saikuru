@@ -1,4 +1,3 @@
-import { Button, ButtonText } from '@/components/ui/button';
 import { getToday } from '@/utils/date-utils';
 import { useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
@@ -62,9 +61,6 @@ export default function TaskCyclePage() {
         contentContainerStyle={styles.scrollContent}
       >
         <PageHeader onLogWorkout={handleLogWorkout} />
-        <Button>
-          <ButtonText>11111</ButtonText>
-        </Button>
         <View style={styles.componentWrapper}>
           <CurrentWeekCard weekData={currentWeekData} />
         </View>

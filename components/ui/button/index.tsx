@@ -1,429 +1,210 @@
-'use client';
 import React from 'react';
-import { createButton } from '@gluestack-ui/core/button/creator';
-import {
-  tva,
-  withStyleContext,
-  useStyleContext,
-  type VariantProps,
-} from '@gluestack-ui/utils/nativewind-utils';
-import { cssInterop } from 'nativewind';
-import { ActivityIndicator, Pressable, Text, View } from 'react-native';
-import { PrimitiveIcon, UIIcon } from '@gluestack-ui/core/icon/creator';
+import { Pressable, Text, View, ActivityIndicator, StyleSheet } from 'react-native';
 
-const SCOPE = 'BUTTON';
+interface ButtonProps extends React.ComponentPropsWithoutRef<typeof Pressable> {
+  variant?: 'solid' | 'outline' | 'link';
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+  action?: 'primary' | 'secondary' | 'positive' | 'negative' | 'default';
+  isLoading?: boolean;
+}
 
-const Root = withStyleContext(Pressable, SCOPE);
+interface ButtonTextProps extends React.ComponentPropsWithoutRef<typeof Text> {}
 
-const UIButton = createButton({
-  Root: Root,
-  Text,
-  Group: View,
-  Spinner: ActivityIndicator,
-  Icon: UIIcon,
-});
+interface ButtonIconProps extends React.ComponentPropsWithoutRef<typeof View> {
+  children: React.ReactNode;
+}
 
-cssInterop(PrimitiveIcon, {
-  className: {
-    target: 'style',
-    nativeStyleToProp: {
-      height: true,
-      width: true,
-      fill: true,
-      color: 'classNameColor',
-      stroke: true,
-    },
-  },
-});
+interface ButtonGroupProps extends React.ComponentPropsWithoutRef<typeof View> {
+  space?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl';
+  isAttached?: boolean;
+  flexDirection?: 'row' | 'column' | 'row-reverse' | 'column-reverse';
+}
 
-const buttonStyle = tva({
-  base: 'group/button rounded bg-primary-500 flex-row items-center justify-center data-[focus-visible=true]:web:outline-none data-[focus-visible=true]:web:ring-2 data-[disabled=true]:opacity-40 gap-2',
-  variants: {
-    action: {
-      primary:
-        'bg-primary-500 data-[hover=true]:bg-primary-600 data-[active=true]:bg-primary-700 border-primary-300 data-[hover=true]:border-primary-400 data-[active=true]:border-primary-500 data-[focus-visible=true]:web:ring-indicator-info',
-      secondary:
-        'bg-secondary-500 border-secondary-300 data-[hover=true]:bg-secondary-600 data-[hover=true]:border-secondary-400 data-[active=true]:bg-secondary-700 data-[active=true]:border-secondary-700 data-[focus-visible=true]:web:ring-indicator-info',
-      positive:
-        'bg-success-500 border-success-300 data-[hover=true]:bg-success-600 data-[hover=true]:border-success-400 data-[active=true]:bg-success-700 data-[active=true]:border-success-500 data-[focus-visible=true]:web:ring-indicator-info',
-      negative:
-        'bg-error-500 border-error-300 data-[hover=true]:bg-error-600 data-[hover=true]:border-error-400 data-[active=true]:bg-error-700 data-[active=true]:border-error-500 data-[focus-visible=true]:web:ring-indicator-info',
-      default:
-        'bg-transparent data-[hover=true]:bg-background-50 data-[active=true]:bg-transparent',
-    },
-    variant: {
-      link: 'px-0',
-      outline:
-        'bg-transparent border data-[hover=true]:bg-background-50 data-[active=true]:bg-transparent',
-      solid: '',
-    },
+const getButtonStyles = (
+  variant: 'solid' | 'outline' | 'link',
+  size: 'xs' | 'sm' | 'md' | 'lg' | 'xl',
+  action: 'primary' | 'secondary' | 'positive' | 'negative' | 'default'
+) => {
+  const styles: any = {};
 
-    size: {
-      xs: 'px-3.5 h-8',
-      sm: 'px-4 h-9',
-      md: 'px-5 h-10',
-      lg: 'px-6 h-11',
-      xl: 'px-7 h-12',
-    },
-  },
-  compoundVariants: [
-    {
-      action: 'primary',
-      variant: 'link',
-      class:
-        'px-0 bg-transparent data-[hover=true]:bg-transparent data-[active=true]:bg-transparent',
-    },
-    {
-      action: 'secondary',
-      variant: 'link',
-      class:
-        'px-0 bg-transparent data-[hover=true]:bg-transparent data-[active=true]:bg-transparent',
-    },
-    {
-      action: 'positive',
-      variant: 'link',
-      class:
-        'px-0 bg-transparent data-[hover=true]:bg-transparent data-[active=true]:bg-transparent',
-    },
-    {
-      action: 'negative',
-      variant: 'link',
-      class:
-        'px-0 bg-transparent data-[hover=true]:bg-transparent data-[active=true]:bg-transparent',
-    },
-    {
-      action: 'primary',
-      variant: 'outline',
-      class:
-        'bg-transparent data-[hover=true]:bg-background-50 data-[active=true]:bg-transparent',
-    },
-    {
-      action: 'secondary',
-      variant: 'outline',
-      class:
-        'bg-transparent data-[hover=true]:bg-background-50 data-[active=true]:bg-transparent',
-    },
-    {
-      action: 'positive',
-      variant: 'outline',
-      class:
-        'bg-transparent data-[hover=true]:bg-background-50 data-[active=true]:bg-transparent',
-    },
-    {
-      action: 'negative',
-      variant: 'outline',
-      class:
-        'bg-transparent data-[hover=true]:bg-background-50 data-[active=true]:bg-transparent',
-    },
-  ],
-});
-
-const buttonTextStyle = tva({
-  base: 'text-typography-0 font-semibold web:select-none',
-  parentVariants: {
-    action: {
-      primary:
-        'text-primary-600 data-[hover=true]:text-primary-600 data-[active=true]:text-primary-700',
-      secondary:
-        'text-typography-500 data-[hover=true]:text-typography-600 data-[active=true]:text-typography-700',
-      positive:
-        'text-success-600 data-[hover=true]:text-success-600 data-[active=true]:text-success-700',
-      negative:
-        'text-error-600 data-[hover=true]:text-error-600 data-[active=true]:text-error-700',
-    },
-    variant: {
-      link: 'data-[hover=true]:underline data-[active=true]:underline',
-      outline: '',
-      solid:
-        'text-typography-0 data-[hover=true]:text-typography-0 data-[active=true]:text-typography-0',
-    },
-    size: {
-      xs: 'text-xs',
-      sm: 'text-sm',
-      md: 'text-base',
-      lg: 'text-lg',
-      xl: 'text-xl',
-    },
-  },
-  parentCompoundVariants: [
-    {
-      variant: 'solid',
-      action: 'primary',
-      class:
-        'text-typography-0 data-[hover=true]:text-typography-0 data-[active=true]:text-typography-0',
-    },
-    {
-      variant: 'solid',
-      action: 'secondary',
-      class:
-        'text-typography-800 data-[hover=true]:text-typography-800 data-[active=true]:text-typography-800',
-    },
-    {
-      variant: 'solid',
-      action: 'positive',
-      class:
-        'text-typography-0 data-[hover=true]:text-typography-0 data-[active=true]:text-typography-0',
-    },
-    {
-      variant: 'solid',
-      action: 'negative',
-      class:
-        'text-typography-0 data-[hover=true]:text-typography-0 data-[active=true]:text-typography-0',
-    },
-    {
-      variant: 'outline',
-      action: 'primary',
-      class:
-        'text-primary-500 data-[hover=true]:text-primary-500 data-[active=true]:text-primary-500',
-    },
-    {
-      variant: 'outline',
-      action: 'secondary',
-      class:
-        'text-typography-500 data-[hover=true]:text-primary-600 data-[active=true]:text-typography-700',
-    },
-    {
-      variant: 'outline',
-      action: 'positive',
-      class:
-        'text-primary-500 data-[hover=true]:text-primary-500 data-[active=true]:text-primary-500',
-    },
-    {
-      variant: 'outline',
-      action: 'negative',
-      class:
-        'text-primary-500 data-[hover=true]:text-primary-500 data-[active=true]:text-primary-500',
-    },
-  ],
-});
-
-const buttonIconStyle = tva({
-  base: 'fill-none',
-  parentVariants: {
-    variant: {
-      link: 'data-[hover=true]:underline data-[active=true]:underline',
-      outline: '',
-      solid:
-        'text-typography-0 data-[hover=true]:text-typography-0 data-[active=true]:text-typography-0',
-    },
-    size: {
-      xs: 'h-3.5 w-3.5',
-      sm: 'h-4 w-4',
-      md: 'h-[18px] w-[18px]',
-      lg: 'h-[18px] w-[18px]',
-      xl: 'h-5 w-5',
-    },
-    action: {
-      primary:
-        'text-primary-600 data-[hover=true]:text-primary-600 data-[active=true]:text-primary-700',
-      secondary:
-        'text-typography-500 data-[hover=true]:text-typography-600 data-[active=true]:text-typography-700',
-      positive:
-        'text-success-600 data-[hover=true]:text-success-600 data-[active=true]:text-success-700',
-
-      negative:
-        'text-error-600 data-[hover=true]:text-error-600 data-[active=true]:text-error-700',
-    },
-  },
-  parentCompoundVariants: [
-    {
-      variant: 'solid',
-      action: 'primary',
-      class:
-        'text-typography-0 data-[hover=true]:text-typography-0 data-[active=true]:text-typography-0',
-    },
-    {
-      variant: 'solid',
-      action: 'secondary',
-      class:
-        'text-typography-800 data-[hover=true]:text-typography-800 data-[active=true]:text-typography-800',
-    },
-    {
-      variant: 'solid',
-      action: 'positive',
-      class:
-        'text-typography-0 data-[hover=true]:text-typography-0 data-[active=true]:text-typography-0',
-    },
-    {
-      variant: 'solid',
-      action: 'negative',
-      class:
-        'text-typography-0 data-[hover=true]:text-typography-0 data-[active=true]:text-typography-0',
-    },
-  ],
-});
-
-const buttonGroupStyle = tva({
-  base: '',
-  variants: {
-    space: {
-      'xs': 'gap-1',
-      'sm': 'gap-2',
-      'md': 'gap-3',
-      'lg': 'gap-4',
-      'xl': 'gap-5',
-      '2xl': 'gap-6',
-      '3xl': 'gap-7',
-      '4xl': 'gap-8',
-    },
-    isAttached: {
-      true: 'gap-0',
-    },
-    flexDirection: {
-      'row': 'flex-row',
-      'column': 'flex-col',
-      'row-reverse': 'flex-row-reverse',
-      'column-reverse': 'flex-col-reverse',
-    },
-  },
-});
-
-type IButtonProps = Omit<
-  React.ComponentPropsWithoutRef<typeof UIButton>,
-  'context'
-> &
-  VariantProps<typeof buttonStyle> & { className?: string };
-
-const Button = React.forwardRef<
-  React.ElementRef<typeof UIButton>,
-  IButtonProps
->(
-  (
-    { className, variant = 'solid', size = 'md', action = 'primary', ...props },
-    ref
-  ) => {
-    return (
-      <UIButton
-        ref={ref}
-        {...props}
-        className={buttonStyle({ variant, size, action, class: className })}
-        context={{ variant, size, action }}
-      />
-    );
-  }
-);
-
-type IButtonTextProps = React.ComponentPropsWithoutRef<typeof UIButton.Text> &
-  VariantProps<typeof buttonTextStyle> & { className?: string };
-
-const ButtonText = React.forwardRef<
-  React.ElementRef<typeof UIButton.Text>,
-  IButtonTextProps
->(({ className, variant, size, action, ...props }, ref) => {
-  const {
-    variant: parentVariant,
-    size: parentSize,
-    action: parentAction,
-  } = useStyleContext(SCOPE);
-
-  return (
-    <UIButton.Text
-      ref={ref}
-      {...props}
-      className={buttonTextStyle({
-        parentVariants: {
-          variant: parentVariant,
-          size: parentSize,
-          action: parentAction,
-        },
-        variant,
-        size,
-        action,
-        class: className,
-      })}
-    />
-  );
-});
-
-const ButtonSpinner = UIButton.Spinner;
-
-type IButtonIcon = React.ComponentPropsWithoutRef<typeof UIButton.Icon> &
-  VariantProps<typeof buttonIconStyle> & {
-    className?: string | undefined;
-    as?: React.ElementType;
-    height?: number;
-    width?: number;
+  // Base styles
+  styles.base = {
+    borderRadius: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    opacity: 1,
   };
 
-const ButtonIcon = React.forwardRef<
-  React.ElementRef<typeof UIButton.Icon>,
-  IButtonIcon
->(({ className, size, ...props }, ref) => {
-  const {
-    variant: parentVariant,
-    size: parentSize,
-    action: parentAction,
-  } = useStyleContext(SCOPE);
+  // Disabled state
+  styles.disabled = {
+    opacity: 0.4,
+  };
 
-  if (typeof size === 'number') {
-    return (
-      <UIButton.Icon
-        ref={ref}
-        {...props}
-        className={buttonIconStyle({ class: className })}
-        size={size}
-      />
-    );
-  } else if (
-    (props.height !== undefined || props.width !== undefined) &&
-    size === undefined
-  ) {
-    return (
-      <UIButton.Icon
-        ref={ref}
-        {...props}
-        className={buttonIconStyle({ class: className })}
-      />
-    );
+  // Size styles
+  const sizeStyles: Record<string, any> = {
+    xs: { paddingHorizontal: 14, height: 32 },
+    sm: { paddingHorizontal: 16, height: 36 },
+    md: { paddingHorizontal: 20, height: 40 },
+    lg: { paddingHorizontal: 24, height: 44 },
+    xl: { paddingHorizontal: 28, height: 48 },
+  };
+
+  // Variant styles
+  const variantStyles: Record<string, any> = {
+    solid: {},
+    outline: { borderWidth: 1 },
+    link: { paddingHorizontal: 0 },
+  };
+
+  // Action styles
+  const actionStyles: any = {};
+
+  switch (action) {
+    case 'primary':
+      if (variant === 'solid') {
+        actionStyles.backgroundColor = '#C6FF00';
+        actionStyles.color = '#0E0E0E';
+      } else if (variant === 'outline') {
+        actionStyles.borderColor = '#C6FF00';
+        actionStyles.color = '#C6FF00';
+      } else {
+        actionStyles.color = '#C6FF00';
+      }
+      break;
+    case 'secondary':
+      if (variant === 'solid') {
+        actionStyles.backgroundColor = '#E4E7EB';
+        actionStyles.color = '#1A1C1E';
+      } else if (variant === 'outline') {
+        actionStyles.borderColor = '#E4E7EB';
+        actionStyles.color = '#1A1C1E';
+      } else {
+        actionStyles.color = '#1A1C1E';
+      }
+      break;
+    case 'positive':
+      if (variant === 'solid') {
+        actionStyles.backgroundColor = '#4C6400';
+        actionStyles.color = '#FFFFFF';
+      } else if (variant === 'outline') {
+        actionStyles.borderColor = '#4C6400';
+        actionStyles.color = '#4C6400';
+      } else {
+        actionStyles.color = '#4C6400';
+      }
+      break;
+    case 'negative':
+      if (variant === 'solid') {
+        actionStyles.backgroundColor = '#DC2626';
+        actionStyles.color = '#FFFFFF';
+      } else if (variant === 'outline') {
+        actionStyles.borderColor = '#DC2626';
+        actionStyles.color = '#DC2626';
+      } else {
+        actionStyles.color = '#DC2626';
+      }
+      break;
+    default:
+      actionStyles.backgroundColor = 'transparent';
   }
-  return (
-    <UIButton.Icon
-      {...props}
-      className={buttonIconStyle({
-        parentVariants: {
-          size: parentSize,
-          variant: parentVariant,
-          action: parentAction,
-        },
-        size,
-        class: className,
-      })}
-      ref={ref}
-    />
-  );
-});
 
-type IButtonGroupProps = React.ComponentPropsWithoutRef<typeof UIButton.Group> &
-  VariantProps<typeof buttonGroupStyle>;
+  return {
+    ...styles.base,
+    ...sizeStyles[size],
+    ...variantStyles[variant],
+    ...actionStyles,
+  };
+};
 
-const ButtonGroup = React.forwardRef<
-  React.ElementRef<typeof UIButton.Group>,
-  IButtonGroupProps
->(
+const Button = React.forwardRef<React.ElementRef<typeof Pressable>, ButtonProps>(
   (
     {
-      className,
-      space = 'md',
-      isAttached = false,
-      flexDirection = 'column',
+      variant = 'solid',
+      size = 'md',
+      action = 'primary',
+      isLoading = false,
+      disabled = false,
+      style,
       ...props
     },
     ref
   ) => {
+    const buttonStyles = getButtonStyles(variant, size, action);
+
     return (
-      <UIButton.Group
-        className={buttonGroupStyle({
-          class: className,
-          space,
-          isAttached,
-          flexDirection,
-        })}
-        {...props}
+      <Pressable
         ref={ref}
+        {...props}
+        style={[buttonStyles, disabled && { opacity: 0.4 }, style]}
+        disabled={disabled || isLoading}
+      >
+        {isLoading ? (
+          <ActivityIndicator
+            size={size === 'xs' || size === 'sm' ? 'small' : 'large'}
+            color={variant === 'solid' ? '#0E0E0E' : '#C6FF00'}
+          />
+        ) : (
+          props.children
+        )}
+      </Pressable>
+    );
+  }
+);
+
+const ButtonText = React.forwardRef<React.ElementRef<typeof Text>, ButtonTextProps>(
+  ({ style, ...props }, ref) => {
+    return <Text ref={ref} {...props} style={[styles.buttonText, style]} />;
+  }
+);
+
+const ButtonIcon = React.forwardRef<React.ElementRef<typeof View>, ButtonIconProps>(
+  ({ style, ...props }, ref) => {
+    return <View ref={ref} {...props} style={[styles.buttonIcon, style]} />;
+  }
+);
+
+const ButtonSpinner = ({ size = 'md' }: { size?: string }) => (
+  <ActivityIndicator size={size === 'xs' || size === 'sm' ? 'small' : 'large'} color="#0E0E0E" />
+);
+
+const ButtonGroup = React.forwardRef<React.ElementRef<typeof View>, ButtonGroupProps>(
+  ({ className, space = 'md', isAttached = false, flexDirection = 'column', ...props }, ref) => {
+    const spaceStyles = {
+      xs: 4,
+      sm: 8,
+      md: 12,
+      lg: 16,
+      xl: 20,
+      '2xl': 24,
+      '3xl': 28,
+      '4xl': 32,
+    };
+
+    return (
+      <View
+        ref={ref}
+        {...props}
+        style={[
+          {
+            flexDirection,
+            gap: isAttached ? 0 : spaceStyles[space],
+          },
+        ]}
       />
     );
   }
 );
+
+const styles = StyleSheet.create({
+  buttonText: {
+    fontWeight: '600',
+    fontSize: 16,
+    textAlign: 'center',
+  },
+  buttonIcon: {},
+});
 
 Button.displayName = 'Button';
 ButtonText.displayName = 'ButtonText';
@@ -431,4 +212,4 @@ ButtonSpinner.displayName = 'ButtonSpinner';
 ButtonIcon.displayName = 'ButtonIcon';
 ButtonGroup.displayName = 'ButtonGroup';
 
-export { Button, ButtonText, ButtonSpinner, ButtonIcon, ButtonGroup };
+export { Button, ButtonGroup, ButtonIcon, ButtonSpinner, ButtonText };

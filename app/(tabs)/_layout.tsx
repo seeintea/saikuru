@@ -5,8 +5,6 @@ import { Target, Upload, User } from 'lucide-react-native';
 import React from 'react';
 import { Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import { useColorScheme } from '@/hooks/use-color-scheme';
-
 interface TabBarButtonProps {
   label: string;
   icon: LucideIcon;
@@ -15,14 +13,11 @@ interface TabBarButtonProps {
 }
 
 function TabBarButton({ label, icon: Icon, isActive, onPress }: TabBarButtonProps) {
-  const colorScheme = useColorScheme();
-  const isDark = colorScheme === 'dark';
-
   const getTabBarColor = () => {
     if (isActive) {
       return '#A3FF00';
     }
-    return isDark ? '#9BA1A6' : '#687076';
+    return '#9BA1A6';
   };
 
   return (
@@ -31,11 +26,7 @@ function TabBarButton({ label, icon: Icon, isActive, onPress }: TabBarButtonProp
         style={[
           styles.activeContainer,
           {
-            backgroundColor: isActive
-              ? isDark
-                ? 'rgba(163, 255, 0, 0.15)'
-                : 'rgba(163, 255, 0, 0.2)'
-              : 'transparent',
+            backgroundColor: isActive ? 'rgba(163, 255, 0, 0.15)' : 'transparent',
           },
         ]}
       >
@@ -57,10 +48,7 @@ interface TabConfig {
 }
 
 function CustomTabBar({ state, navigation }: BottomTabBarProps) {
-  const colorScheme = useColorScheme();
-  const isDark = colorScheme === 'dark';
-
-  const tabBarBackgroundColor = isDark ? 'rgba(38, 38, 38, 0.9)' : 'rgba(244, 244, 245, 0.9)';
+  const tabBarBackgroundColor = 'rgba(38, 38, 38, 0.9)';
 
   const tabs: TabConfig[] = [
     { key: 'index', label: '摘要', icon: Target },

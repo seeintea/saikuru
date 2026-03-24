@@ -1,9 +1,9 @@
 import { StyleSheet, Text, View } from 'react-native';
 
-export default function ShareScreen() {
+export default function WorkoutScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>上传</Text>
+      <Text style={styles.title}>创建</Text>
     </View>
   );
 }

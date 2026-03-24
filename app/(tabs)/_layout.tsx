@@ -1,9 +1,115 @@
 import type { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { Tabs } from 'expo-router';
-import type { LucideIcon } from 'lucide-react-native';
-import { Target, Upload, User } from 'lucide-react-native';
-import React from 'react';
-import { Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { LayersPlus, type LucideIcon, Target, User } from 'lucide-react-native';
+import { useRef, useState } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
+
+const tabs = [
+  { key: 'index', label: '周期', icon: Target },
+  { key: 'create', label: '新建', icon: LayersPlus },
+  { key: 'mine', label: '我的', icon: User },
+];
+
+export default function TabLayout() {
+  return (
+    <Tabs screenOptions={{ headerShown: false }} tabBar={(props) => <CustomTabBar {...props} />}>
+      {tabs.map((tab) => (
+        <Tabs.Screen key={tab.key} name={tab.key} />
+      ))}
+    </Tabs>
+  );
+}
+
+function CustomTabBar({ state, navigation }: BottomTabBarProps) {
+  const activeIndex = useSharedValue(state.index);
+  const [tabMeasurements, setTabMeasurements] = useState<{ width: number; x: number }[]>([]);
+  const tabRefs = useRef<(View | null)[]>([]);
+  const isUserTriggered = useRef(false);
+  const prevIndex = useRef(state.index);
+
+  const handleTabPress = (index: number, key: string) => {
+    isUserTriggered.current = true;
+    activeIndex.value = index;
+    navigation.navigate(key);
+  };
+
+  const handleTabLayout = (index: number, event: any) => {
+    const { width, x } = event.nativeEvent.layout;
+    setTabMeasurements((prev: { width: number; x: number }[]) => {
+      const newMeasurements = [...prev];
+      newMeasurements[index] = { width, x };
+      return newMeasurements;
+    });
+  };
+
+  const indicatorStyle = useAnimatedStyle(() => {
+    const currentMeasurement = tabMeasurements[activeIndex.value];
+    if (!currentMeasurement) {
+      return {
+        transform: [{ translateX: 0 }],
+        width: 0,
+      };
+    }
+
+    // 检查是否是用户触发的切换
+    const shouldAnimate = isUserTriggered.current && activeIndex.value !== prevIndex.current;
+
+    if (shouldAnimate) {
+      // 动画执行后重置标志
+      isUserTriggered.current = false;
+      prevIndex.current = activeIndex.value;
+
+      const translateX = withSpring(currentMeasurement.x, {
+        damping: 40,
+        stiffness: 500,
+      });
+      const width = withSpring(currentMeasurement.width, {
+        damping: 40,
+        stiffness: 500,
+      });
+
+      return {
+        transform: [{ translateX }],
+        width,
+      };
+    }
+
+    // 首次加载或非用户触发时，直接设置位置和宽度
+    prevIndex.current = activeIndex.value;
+    return {
+      transform: [{ translateX: currentMeasurement.x }],
+      width: currentMeasurement.width,
+    };
+  });
+
+  return (
+    <View style={styles.container}>
+      <View style={styles['tab-bar']}>
+        <Animated.View style={[styles['active-indicator'], indicatorStyle]} />
+        {tabs.map((tab, index) => {
+          const isActive = state.routes[state.index].name === tab.key;
+          return (
+            <View
+              key={tab.key}
+              ref={(ref) => {
+                tabRefs.current[index] = ref;
+              }}
+              onLayout={(event) => handleTabLayout(index, event)}
+            >
+              <TabBarButton
+                label={tab.label}
+                icon={tab.icon}
+                isActive={isActive}
+                onPress={() => handleTabPress(index, tab.key)}
+              />
+            </View>
+          );
+        })}
+      </View>
+    </View>
+  );
+}
 
 interface TabBarButtonProps {
   label: string;
@@ -13,71 +119,20 @@ interface TabBarButtonProps {
 }
 
 function TabBarButton({ label, icon: Icon, isActive, onPress }: TabBarButtonProps) {
-  const getTabBarColor = () => {
-    if (isActive) {
-      return '#A3FF00';
-    }
-    return '#9BA1A6';
-  };
+  const activeCtxColor = isActive ? '#a3ff00' : '#9ba1A6';
 
   return (
-    <TouchableOpacity onPress={onPress} style={styles.tab} activeOpacity={0.7}>
-      <View
+    <TouchableOpacity onPress={onPress} activeOpacity={0.9} style={styles['tab-item']}>
+      <Icon size={24} color={activeCtxColor} strokeWidth={2.5} />
+      <Text
         style={[
-          styles.activeContainer,
-          {
-            backgroundColor: isActive ? 'rgba(163, 255, 0, 0.15)' : 'transparent',
-          },
+          styles['tab-label'],
+          { color: activeCtxColor, fontWeight: isActive ? '600' : '500' },
         ]}
       >
-        <Icon size={24} color={getTabBarColor()} strokeWidth={2.5} />
-        <Text
-          style={[styles.label, { color: getTabBarColor(), fontWeight: isActive ? '600' : '500' }]}
-        >
-          {label}
-        </Text>
-      </View>
+        {label}
+      </Text>
     </TouchableOpacity>
-  );
-}
-
-interface TabConfig {
-  key: string;
-  label: string;
-  icon: LucideIcon;
-}
-
-function CustomTabBar({ state, navigation }: BottomTabBarProps) {
-  const tabBarBackgroundColor = 'rgba(38, 38, 38, 0.9)';
-
-  const tabs: TabConfig[] = [
-    { key: 'index', label: '摘要', icon: Target },
-    { key: 'upload', label: '上传', icon: Upload },
-    { key: 'self', label: '我的', icon: User },
-  ];
-
-  return (
-    <View style={styles.container}>
-      <View style={[styles.tabBar, { backgroundColor: tabBarBackgroundColor }]}>
-        <View style={styles.tabContainer}>
-          {tabs.map((tab) => {
-            const isActive = state.routes[state.index].name === tab.key;
-
-            return (
-              <TabBarButton
-                key={tab.key}
-                label={tab.label}
-                icon={tab.icon}
-                isActive={isActive}
-                onPress={() => {
-                  navigation.navigate(tab.key as never);
-                }}
-              />
-            );
-          })}
-        </View>
-      </View>
-    </View>
   );
 }
 
@@ -88,57 +143,38 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     alignItems: 'center',
-  },
-  tabBar: {
     marginBottom: 8,
-    borderRadius: 100,
-    ...Platform.select({
-      ios: {
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: -2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 8,
-      },
-      android: {
-        elevation: 8,
-      },
-    }),
   },
-  tabContainer: {
+  ['tab-bar']: {
+    borderRadius: 100,
+    backgroundColor: 'rgba(38, 38, 38, 0.7)',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 4,
     paddingHorizontal: 6,
+    paddingInline: 4,
     gap: 4,
+    position: 'relative',
   },
-  tab: {
-    alignItems: 'center',
-    paddingVertical: 4,
-  },
-  activeContainer: {
-    alignItems: 'center',
+  ['active-indicator']: {
+    position: 'absolute',
+    top: 4,
+    left: 0,
     borderRadius: 100,
-    paddingVertical: 8,
-    paddingHorizontal: 36,
+    backgroundColor: 'rgba(163, 255, 0, 0.15)',
+    height: 60,
   },
-  label: {
-    fontSize: 10,
-    paddingTop: 6,
+  // tab button
+  ['tab-item']: {
+    alignItems: 'center',
+    paddingVertical: 8,
+    marginVertical: 4,
+    borderRadius: 100,
+    paddingHorizontal: 36,
+    zIndex: 1,
+  },
+  ['tab-label']: {
+    fontSize: 12,
+    paddingTop: 4,
   },
 });
-
-export default function TabLayout() {
-  return (
-    <Tabs
-      screenOptions={{
-        headerShown: false,
-      }}
-      tabBar={(props) => <CustomTabBar {...props} />}
-    >
-      <Tabs.Screen name="index" />
-      <Tabs.Screen name="upload" />
-      <Tabs.Screen name="self" />
-    </Tabs>
-  );
-}

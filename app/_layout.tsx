@@ -1,8 +1,9 @@
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
+import { StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { View } from 'react-native';
+import 'react-native-reanimated';
 
 export const unstable_settings = {
   anchor: '(tabs)',
@@ -10,36 +11,21 @@ export const unstable_settings = {
 
 export default function RootLayout() {
   return (
-    <View
-      style={{
-        flex: 1,
-        height: '100%',
-        width: '100%',
-        backgroundColor: '#0E0E0E',
-      }}
-    >
-      <Stack
-        screenOptions={{
-          headerStyle: {
-            backgroundColor: '#151718',
-          },
-          headerTintColor: '#A3FF00',
-          headerTitleStyle: {
-            fontSize: 18,
-            fontWeight: '600',
-          },
-        }}
-      >
+    <SafeAreaView style={styles.root}>
+      <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen
-          name="records"
-          options={{
-            title: '打卡记录',
-            headerShown: true,
-          }}
-        />
+        <Stack.Screen name="records" options={{ headerShown: false }} />
       </Stack>
       <StatusBar style="light" />
-    </View>
+    </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+    height: '100%',
+    width: '100%',
+    backgroundColor: '#0e0e0e',
+  },
+});

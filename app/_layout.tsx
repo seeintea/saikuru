@@ -1,3 +1,4 @@
+import { useCustomFonts } from "@/hooks/use-custom-fonts";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet } from "react-native";
@@ -10,6 +11,8 @@ export const unstable_settings = {
 };
 
 export default function RootLayout() {
+  useCustomFonts();
+
   return (
     <SafeAreaView style={styles.root}>
       <Stack>

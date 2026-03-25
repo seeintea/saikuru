@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
+import { FONTS } from "@/hooks/use-custom-fonts";
 import type { WithViewStyle } from "@/types";
 import { LinearGradient } from "expo-linear-gradient";
-import { CheckCheck, ChevronDown, Sprout } from "lucide-react-native";
+import { CheckCheck, ChevronDown } from "lucide-react-native";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export function Header({ style = {} }: WithViewStyle) {
@@ -13,7 +14,6 @@ export function Header({ style = {} }: WithViewStyle) {
       <View style={[styles.head, style]}>
         <TouchableOpacity activeOpacity={1} onPress={() => {}}>
           <View style={styles.task}>
-            <Sprout size={18} color={taskLabelColor} />
             <Text style={[styles["task-label"], { color: taskLabelColor }]}>2026打卡</Text>
             <ChevronDown size={18} color={taskLabelColor} />
           </View>
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
   },
   ["task-label"]: {
     fontSize: 22,
-    fontWeight: 600,
+    fontFamily: FONTS.dingTalkJinBuTi,
   },
   button: {
     color: "#485e00",

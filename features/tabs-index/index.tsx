@@ -1,6 +1,7 @@
 import { CustomCalendar } from "@/components/custom-calendar";
 import { tabPaddingBottom } from "@/components/tab-screen-wrapper";
 import { Card } from "@/components/ui/card";
+import { FONTS } from "@/hooks/use-custom-fonts";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { Header } from "./components/header";
 
@@ -11,7 +12,7 @@ export function TabsIndex() {
       <ScrollView style={{ flex: 1, paddingBottom: tabPaddingBottom }}>
         <Card style={[common.mx24, styles.summary]}>
           <View>
-            <Text>thinking...</Text>
+            <Text style={{ fontFamily: FONTS.alimamaAgile }}>thinking...</Text>
           </View>
         </Card>
         <Card style={[common.mx24, styles.calendar]}>

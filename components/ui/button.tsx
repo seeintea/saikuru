@@ -1,19 +1,13 @@
+import type { WithViewStyle } from '@/types';
 import { ReactNode } from 'react';
-import {
-  type GestureResponderEvent,
-  type StyleProp,
-  type ViewStyle,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
+import { type GestureResponderEvent, StyleSheet, TouchableOpacity } from 'react-native';
 
-interface PrimaryButtonProps {
-  style?: StyleProp<ViewStyle>;
+interface ButtonProps extends WithViewStyle {
   children: ReactNode;
   onPress: (event?: GestureResponderEvent) => void;
 }
 
-export function PrimaryButton({ style, children, onPress }: PrimaryButtonProps) {
+export function Button({ style, children, onPress }: ButtonProps) {
   return (
     <TouchableOpacity style={[styles.button, style]} onPress={onPress} activeOpacity={0.9}>
       {children}

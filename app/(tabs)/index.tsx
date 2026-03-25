@@ -3,7 +3,7 @@ import { TabsIndex } from '@/features/tabs-index';
 
 export default function IndexScreen() {
   return (
-    <TabScreenWrapper>
+    <TabScreenWrapper style={{ paddingBottom: 0 }}>
       <TabsIndex />
     </TabScreenWrapper>
   );

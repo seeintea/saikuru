@@ -1,21 +1,22 @@
 import { PrimaryButton } from '@/components/primary-button';
 import { LinearGradient } from 'expo-linear-gradient';
-import { CheckCheck, ListTodo } from 'lucide-react-native';
+import { CheckCheck, ChevronDown, Sprout } from 'lucide-react-native';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export function Header() {
   return (
     <View style={styles.wrapper}>
       <View style={styles.hd}>
-        <TouchableOpacity onPress={() => {}}>
+        <TouchableOpacity activeOpacity={1} onPress={() => {}}>
           <View style={styles.task}>
-            <ListTodo size={24} color={'#c6ff00'} />
-            <Text style={styles['task-label']}>2026</Text>
+            <Sprout size={18} color={'#c6ff00'} />
+            <Text style={styles['task-label']}>2026打卡</Text>
+            <ChevronDown size={18} color={'#c6ff00'} />
           </View>
         </TouchableOpacity>
         <PrimaryButton onPress={() => {}}>
           <View style={styles.button}>
-            <CheckCheck size={16} />
+            <CheckCheck size={16} color={'#485e00'} />
             <Text style={styles['button-text']}>立即打卡</Text>
           </View>
         </PrimaryButton>

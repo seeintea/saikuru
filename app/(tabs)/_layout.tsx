@@ -1,7 +1,7 @@
 import type { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { Tabs } from 'expo-router';
 import { LayersPlus, type LucideIcon, Target, User } from 'lucide-react-native';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
@@ -23,13 +23,17 @@ export default function TabLayout() {
 
 function CustomTabBar({ state, navigation }: BottomTabBarProps) {
   const activeIndex = useSharedValue(state.index);
+  const isFirstLoad = useSharedValue(true); // 线程安全的共享值
   const [tabMeasurements, setTabMeasurements] = useState<{ width: number; x: number }[]>([]);
   const tabRefs = useRef<(View | null)[]>([]);
-  const isUserTriggered = useRef(false);
-  const prevIndex = useRef(state.index);
+
+  // 监听 state.index 变化，确保 activeIndex 与当前选中的 tab 同步
+  useEffect(() => {
+    activeIndex.value = state.index;
+  }, [state.index]);
 
   const handleTabPress = (index: number, key: string) => {
-    isUserTriggered.current = true;
+    isFirstLoad.value = false; // 第一次点击后标记为非首次加载
     activeIndex.value = index;
     navigation.navigate(key);
   };
@@ -39,6 +43,13 @@ function CustomTabBar({ state, navigation }: BottomTabBarProps) {
     setTabMeasurements((prev: { width: number; x: number }[]) => {
       const newMeasurements = [...prev];
       newMeasurements[index] = { width, x };
+      // 当所有 tab 都测量完成后，标记首次加载完成
+      if (newMeasurements.filter(Boolean).length === tabs.length) {
+        // 使用 setTimeout 确保在下次事件循环中设置，让初始位置先渲染
+        setTimeout(() => {
+          isFirstLoad.value = false;
+        }, 0);
+      }
       return newMeasurements;
     });
   };
@@ -52,34 +63,27 @@ function CustomTabBar({ state, navigation }: BottomTabBarProps) {
       };
     }
 
-    // 检查是否是用户触发的切换
-    const shouldAnimate = isUserTriggered.current && activeIndex.value !== prevIndex.current;
-
-    if (shouldAnimate) {
-      // 动画执行后重置标志
-      isUserTriggered.current = false;
-      prevIndex.current = activeIndex.value;
-
-      const translateX = withSpring(currentMeasurement.x, {
-        damping: 40,
-        stiffness: 500,
-      });
-      const width = withSpring(currentMeasurement.width, {
-        damping: 40,
-        stiffness: 500,
-      });
-
+    // 首次加载时直接设置位置，不使用动画
+    if (isFirstLoad.value) {
       return {
-        transform: [{ translateX }],
-        width,
+        transform: [{ translateX: currentMeasurement.x }],
+        width: currentMeasurement.width,
       };
     }
 
-    // 首次加载或非用户触发时，直接设置位置和宽度
-    prevIndex.current = activeIndex.value;
+    // 非首次加载时使用弹簧动画
+    const translateX = withSpring(currentMeasurement.x, {
+      damping: 40,
+      stiffness: 500,
+    });
+    const width = withSpring(currentMeasurement.width, {
+      damping: 40,
+      stiffness: 500,
+    });
+
     return {
-      transform: [{ translateX: currentMeasurement.x }],
-      width: currentMeasurement.width,
+      transform: [{ translateX }],
+      width,
     };
   });
 

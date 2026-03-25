@@ -1,6 +1,6 @@
-import { StyleSheet, Text, View } from 'react-native';
-import { TaskCycleData } from '@/features/task-cycle/types';
-import { Target, Calendar, Timer, Flame } from 'lucide-react-native';
+import { StyleSheet, Text, View } from "react-native";
+import { TaskCycleData } from "@/features/task-cycle/types";
+import { Target, Calendar, Timer, Flame } from "lucide-react-native";
 
 interface StatsOverviewProps {
   cycleData: TaskCycleData;
@@ -10,7 +10,7 @@ const StatItem = ({
   icon: Icon,
   label,
   value,
-  color = '#ECEDEE',
+  color = "#ECEDEE",
 }: {
   icon: any;
   label: string;
@@ -31,7 +31,7 @@ export default function StatsOverview({ cycleData }: StatsOverviewProps) {
 
   // 计算总完成天数
   const totalCompletedDays = weeks.reduce((sum, week) => {
-    return sum + week.days.filter((day) => day.status === 'completed').length;
+    return sum + week.days.filter((day) => day.status === "completed").length;
   }, 0);
 
   // 计算总天数（已过的周）
@@ -50,12 +50,7 @@ export default function StatsOverview({ cycleData }: StatsOverviewProps) {
     <View style={styles.container}>
       <Text style={styles.title}>统计概览</Text>
       <View style={styles.statsGrid}>
-        <StatItem
-          icon={Target}
-          label="完成率"
-          value={`${overallCompletionRate}%`}
-          color="#A3FF00"
-        />
+        <StatItem icon={Target} label="完成率" value={`${overallCompletionRate}%`} color="#A3FF00" />
         <StatItem icon={Flame} label="连续打卡" value={`${streak}天`} color="#FFD700" />
         <StatItem icon={Calendar} label="已打卡天数" value={`${totalCompletedDays}天`} />
         <StatItem
@@ -74,43 +69,43 @@ const styles = StyleSheet.create({
     marginVertical: 12,
   },
   title: {
-    color: '#ECEDEE',
+    color: "#ECEDEE",
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: "600",
     marginBottom: 16,
   },
   statsGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
     gap: 12,
   },
   statItem: {
     flex: 1,
     minWidth: (360 - 48) / 2, // 响应式宽度
-    backgroundColor: '#1E1E1E',
+    backgroundColor: "#1E1E1E",
     borderRadius: 12,
     padding: 16,
-    alignItems: 'center',
+    alignItems: "center",
     borderWidth: 1,
-    borderColor: '#3D3D3D',
+    borderColor: "#3D3D3D",
   },
   iconContainer: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: 'rgba(163, 255, 0, 0.1)',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "rgba(163, 255, 0, 0.1)",
+    justifyContent: "center",
+    alignItems: "center",
     marginBottom: 8,
   },
   label: {
-    color: '#9BA1A6',
+    color: "#9BA1A6",
     fontSize: 14,
     marginBottom: 4,
   },
   value: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });

@@ -1,9 +1,12 @@
 {
-  "plugins": ["@prettier/plugin-oxc"],
   "semi": true,
-  "singleQuote": true,
+  "singleQuote": false,
   "tabWidth": 2,
+  "useTabs": false,
   "trailingComma": "es5",
-  "printWidth": 100,
-  "endOfLine": "auto"
+  "printWidth": 110,
+  "endOfLine": "lf",
+  "objectWrap": "preserve",
+  "proseWrap": "preserve",
+  "plugins": ["@prettier/plugin-oxc"]
 }

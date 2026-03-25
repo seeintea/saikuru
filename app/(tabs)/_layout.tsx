@@ -1,14 +1,14 @@
-import type { BottomTabBarProps } from '@react-navigation/bottom-tabs';
-import { Tabs } from 'expo-router';
-import { LayersPlus, type LucideIcon, Target, User } from 'lucide-react-native';
-import { useEffect, useRef, useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
+import type { BottomTabBarProps } from "@react-navigation/bottom-tabs";
+import { Tabs } from "expo-router";
+import { LayersPlus, type LucideIcon, Target, User } from "lucide-react-native";
+import { useEffect, useRef, useState } from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import Animated, { useAnimatedStyle, useSharedValue, withSpring } from "react-native-reanimated";
 
 const tabs = [
-  { key: 'index', label: '周期', icon: Target },
-  { key: 'create', label: '新建', icon: LayersPlus },
-  { key: 'mine', label: '我的', icon: User },
+  { key: "index", label: "周期", icon: Target },
+  { key: "create", label: "新建", icon: LayersPlus },
+  { key: "mine", label: "我的", icon: User },
 ];
 
 export default function TabLayout() {
@@ -89,8 +89,8 @@ function CustomTabBar({ state, navigation }: BottomTabBarProps) {
 
   return (
     <View style={styles.container}>
-      <View style={styles['tab-bar']}>
-        <Animated.View style={[styles['active-indicator'], indicatorStyle]} />
+      <View style={styles["tab-bar"]}>
+        <Animated.View style={[styles["active-indicator"], indicatorStyle]} />
         {tabs.map((tab, index) => {
           const isActive = state.routes[state.index].name === tab.key;
           return (
@@ -123,17 +123,12 @@ interface TabBarButtonProps {
 }
 
 function TabBarButton({ label, icon: Icon, isActive, onPress }: TabBarButtonProps) {
-  const activeCtxColor = isActive ? '#a3ff00' : '#9ba1A6';
+  const activeCtxColor = isActive ? "#a3ff00" : "#9ba1A6";
 
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.9} style={styles['tab-item']}>
+    <TouchableOpacity onPress={onPress} activeOpacity={0.9} style={styles["tab-item"]}>
       <Icon size={24} color={activeCtxColor} strokeWidth={2.5} />
-      <Text
-        style={[
-          styles['tab-label'],
-          { color: activeCtxColor, fontWeight: isActive ? '600' : '500' },
-        ]}
-      >
+      <Text style={[styles["tab-label"], { color: activeCtxColor, fontWeight: isActive ? "600" : "500" }]}>
         {label}
       </Text>
     </TouchableOpacity>
@@ -142,42 +137,42 @@ function TabBarButton({ label, icon: Icon, isActive, onPress }: TabBarButtonProp
 
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 0,
     left: 0,
     right: 0,
-    alignItems: 'center',
+    alignItems: "center",
     marginBottom: 8,
   },
-  ['tab-bar']: {
+  ["tab-bar"]: {
     borderRadius: 100,
-    backgroundColor: 'rgba(38, 38, 38, 0.7)',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "rgba(38, 38, 38, 0.7)",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
     paddingHorizontal: 6,
     paddingInline: 4,
     gap: 4,
-    position: 'relative',
+    position: "relative",
   },
-  ['active-indicator']: {
-    position: 'absolute',
+  ["active-indicator"]: {
+    position: "absolute",
     top: 4,
     left: 0,
     borderRadius: 100,
-    backgroundColor: 'rgba(163, 255, 0, 0.15)',
+    backgroundColor: "rgba(163, 255, 0, 0.15)",
     height: 60,
   },
   // tab button
-  ['tab-item']: {
-    alignItems: 'center',
+  ["tab-item"]: {
+    alignItems: "center",
     paddingVertical: 8,
     marginVertical: 4,
     borderRadius: 100,
     paddingHorizontal: 36,
     zIndex: 1,
   },
-  ['tab-label']: {
+  ["tab-label"]: {
     fontSize: 12,
     paddingTop: 4,
   },

@@ -1,6 +1,6 @@
-import { TabScreenWrapper } from '@/components/tab-screen-wrapper';
-import { TabsCreate } from '@/features/tabs-create';
-import { StyleSheet } from 'react-native';
+import { TabScreenWrapper } from "@/components/tab-screen-wrapper";
+import { TabsCreate } from "@/features/tabs-create";
+import { StyleSheet } from "react-native";
 
 export default function CreateScreen() {
   return (
@@ -12,7 +12,7 @@ export default function CreateScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

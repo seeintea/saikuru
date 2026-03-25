@@ -1,5 +1,5 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Plus } from 'lucide-react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Plus } from "lucide-react-native";
 
 interface PageHeaderProps {
   onLogWorkout: () => void;
@@ -21,33 +21,33 @@ export default function PageHeader({ onLogWorkout }: PageHeaderProps) {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     paddingHorizontal: 16,
     paddingVertical: 16,
-    backgroundColor: '#151718',
+    backgroundColor: "#151718",
   },
   leftSection: {
     flex: 1,
   },
   title: {
-    color: '#ECEDEE',
+    color: "#ECEDEE",
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   logButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#A3FF00',
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#A3FF00",
     paddingHorizontal: 16,
     paddingVertical: 10,
     borderRadius: 12,
     gap: 6,
   },
   logButtonText: {
-    color: '#151718',
+    color: "#151718",
     fontSize: 15,
-    fontWeight: '600',
+    fontWeight: "600",
   },
 });

@@ -1,8 +1,8 @@
-import { CustomCalendar } from '@/components/custom-calendar';
-import { tabPaddingBottom } from '@/components/tab-screen-wrapper';
-import { Card } from '@/components/ui/card';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Header } from './components/header';
+import { CustomCalendar } from "@/components/custom-calendar";
+import { tabPaddingBottom } from "@/components/tab-screen-wrapper";
+import { Card } from "@/components/ui/card";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { Header } from "./components/header";
 
 export function TabsIndex() {
   return (
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
   summary: {
     marginTop: 24,
     minHeight: 400,
-    backgroundColor: 'rgba(32,32,32,0.75)',
+    backgroundColor: "rgba(32,32,32,0.75)",
   },
   calendar: {
     marginTop: 24,

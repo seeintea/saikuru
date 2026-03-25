@@ -1,4 +1,4 @@
-import { Platform } from 'react-native';
+import { Platform } from "react-native";
 
 // 获取当前周的开始和结束日期
 // 周一作为一周的第一天
@@ -19,7 +19,7 @@ export const getCurrentWeekRange = (): { start: Date; end: Date } => {
 
 // 获取周几的名称（中文）
 export const getDayName = (date: Date): string => {
-  const days = ['日', '一', '二', '三', '四', '五', '六'];
+  const days = ["日", "一", "二", "三", "四", "五", "六"];
   return days[date.getDay()];
 };
 
@@ -34,16 +34,16 @@ export const getWeekNumber = (date: Date): number => {
 // 格式化日期为 YYYY-MM-DD
 export const formatDate = (date: Date): string => {
   const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
 };
 
 // 格式化日期范围为 MM.DD-MM.DD
 export const formatDateRange = (start: Date, end: Date): string => {
   const format = (date: Date) => {
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
     return `${month}.${day}`;
   };
   return `${format(start)}-${format(end)}`;

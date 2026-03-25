@@ -1,12 +1,12 @@
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-import 'react-native-reanimated';
+import "react-native-reanimated";
 
 export const unstable_settings = {
-  anchor: '(tabs)',
+  anchor: "(tabs)",
 };
 
 export default function RootLayout() {
@@ -24,8 +24,8 @@ export default function RootLayout() {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    height: '100%',
-    width: '100%',
-    backgroundColor: '#0e0e0e',
+    height: "100%",
+    width: "100%",
+    backgroundColor: "#0e0e0e",
   },
 });

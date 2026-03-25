@@ -1,6 +1,6 @@
-import type { WithViewStyle } from '@/types';
-import type { ReactNode } from 'react';
-import { StyleSheet, View } from 'react-native';
+import type { WithViewStyle } from "@/types";
+import type { ReactNode } from "react";
+import { StyleSheet, View } from "react-native";
 
 interface CardProps extends WithViewStyle {
   children: ReactNode;
@@ -15,6 +15,6 @@ const styles = StyleSheet.create({
     paddingBlock: 24,
     paddingInline: 32,
     borderRadius: 48,
-    backgroundColor: '#131313',
+    backgroundColor: "#131313",
   },
 });

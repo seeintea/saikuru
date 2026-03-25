@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View } from 'react-native';
-import { STATUS_COLORS } from '@/features/task-cycle/constants';
+import { StyleSheet, Text, View } from "react-native";
+import { STATUS_COLORS } from "@/features/task-cycle/constants";
 
 interface LegendProps {
   style?: any;
@@ -24,20 +24,20 @@ export default function Legend({ style }: LegendProps) {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
     paddingHorizontal: 16,
     paddingVertical: 12,
     marginHorizontal: 16,
-    backgroundColor: '#1E1E1E',
+    backgroundColor: "#1E1E1E",
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: '#3D3D3D',
+    borderColor: "#3D3D3D",
   },
   legendItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginHorizontal: 16,
   },
   statusDot: {
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     marginRight: 6,
   },
   label: {
-    color: '#9BA1A6',
+    color: "#9BA1A6",
     fontSize: 14,
   },
 });

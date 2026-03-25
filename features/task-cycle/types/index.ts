@@ -1,5 +1,5 @@
 // 任务完成状态类型
-export type TaskCompletionStatus = 'completed' | 'partial' | 'missed' | 'pending';
+export type TaskCompletionStatus = "completed" | "partial" | "missed" | "pending";
 
 // 每日任务数据接口
 export interface DailyTaskData {

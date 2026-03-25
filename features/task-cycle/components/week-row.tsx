@@ -1,7 +1,7 @@
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
-import { WeeklyTaskData } from '@/features/task-cycle/types';
-import DayCell from './day-cell';
-import { isToday } from '@/utils/date-utils';
+import { StyleSheet, Text, View, ScrollView } from "react-native";
+import { WeeklyTaskData } from "@/features/task-cycle/types";
+import DayCell from "./day-cell";
+import { isToday } from "@/utils/date-utils";
 
 interface WeekRowProps {
   weekData: WeeklyTaskData;
@@ -35,32 +35,32 @@ export default function WeekRow({ weekData, isCurrentWeek, onDayPress }: WeekRow
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginVertical: 8,
     marginHorizontal: 16,
   },
   leftSection: {
-    alignItems: 'center',
+    alignItems: "center",
     marginRight: 12,
     minWidth: 40,
   },
   weekNumber: {
-    color: '#ECEDEE',
+    color: "#ECEDEE",
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   currentWeekNumber: {
-    color: '#A3FF00',
+    color: "#A3FF00",
   },
   weekLabel: {
-    color: '#9BA1A6',
+    color: "#9BA1A6",
     fontSize: 12,
     marginTop: -2,
   },
   daysContainer: {
     flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
 });

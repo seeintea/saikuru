@@ -1,6 +1,6 @@
-import { TabScreenWrapper } from '@/components/tab-screen-wrapper';
-import { TabsMine } from '@/features/tabs-mine';
-import { StyleSheet } from 'react-native';
+import { TabScreenWrapper } from "@/components/tab-screen-wrapper";
+import { TabsMine } from "@/features/tabs-mine";
+import { StyleSheet } from "react-native";
 
 export default function MineScreen() {
   return (
@@ -12,7 +12,7 @@ export default function MineScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

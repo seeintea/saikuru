@@ -1,4 +1,4 @@
-import { DailyTaskData, TaskCompletionStatus } from '@/features/task-cycle/types';
+import { DailyTaskData, TaskCompletionStatus } from "@/features/task-cycle/types";
 
 // 月中每一天的数据
 export interface CalendarDayData {
@@ -20,22 +20,9 @@ export interface CalendarMonthData {
   firstDayOfWeek: number;
 }
 
-const monthNames = [
-  '1月',
-  '2月',
-  '3月',
-  '4月',
-  '5月',
-  '6月',
-  '7月',
-  '8月',
-  '9月',
-  '10月',
-  '11月',
-  '12月',
-];
+const monthNames = ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"];
 
-const weekDayNames = ['日', '一', '二', '三', '四', '五', '六'];
+const weekDayNames = ["日", "一", "二", "三", "四", "五", "六"];
 
 // 获取指定日期所在月份的日历数据
 export const getCalendarMonthData = (
@@ -70,11 +57,10 @@ export const getCalendarMonthData = (
   // 添加当月的天数
   for (let day = 1; day <= daysInMonth; day++) {
     const currentDate = new Date(year, month, day);
-    const dateKey = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    const dateKey = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
     const taskData = dailyTasksMap.get(dateKey);
 
-    const isTodayDate =
-      today.getFullYear() === year && today.getMonth() === month && today.getDate() === day;
+    const isTodayDate = today.getFullYear() === year && today.getMonth() === month && today.getDate() === day;
 
     days.push({
       date: currentDate,
@@ -129,8 +115,8 @@ export const buildDailyTasksMap = (allDays: DailyTaskData[]): Map<string, DailyT
 
   allDays.forEach((day) => {
     const year = day.date.getFullYear();
-    const month = String(day.date.getMonth() + 1).padStart(2, '0');
-    const dayNum = String(day.date.getDate()).padStart(2, '0');
+    const month = String(day.date.getMonth() + 1).padStart(2, "0");
+    const dayNum = String(day.date.getDate()).padStart(2, "0");
     const dateKey = `${year}-${month}-${dayNum}`;
     map.set(dateKey, day);
   });

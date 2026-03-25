@@ -3,22 +3,18 @@ import {
   WeeklyTaskData,
   DailyTaskData,
   TaskCompletionStatus,
-} from '@/features/task-cycle/types';
-import { getCurrentWeekRange, getWeekNumber, getWeekDays } from '@/utils/date-utils';
-import { DEFAULT_WEEKLY_GOAL } from '@/features/task-cycle/constants';
+} from "@/features/task-cycle/types";
+import { getCurrentWeekRange, getWeekNumber, getWeekDays } from "@/utils/date-utils";
+import { DEFAULT_WEEKLY_GOAL } from "@/features/task-cycle/constants";
 
 // 创建每日模拟数据
-const createDailyData = (
-  date: Date,
-  status: TaskCompletionStatus,
-  duration?: number
-): DailyTaskData => {
+const createDailyData = (date: Date, status: TaskCompletionStatus, duration?: number): DailyTaskData => {
   return {
     date,
     status,
     duration,
-    notes: status === 'completed' && duration ? `完成了 ${duration} 分钟的锻炼` : '',
-    workoutType: duration ? ['跑步', '力量训练', '瑜伽'][Math.floor(Math.random() * 3)] : undefined,
+    notes: status === "completed" && duration ? `完成了 ${duration} 分钟的锻炼` : "",
+    workoutType: duration ? ["跑步", "力量训练", "瑜伽"][Math.floor(Math.random() * 3)] : undefined,
   };
 };
 
@@ -49,9 +45,9 @@ const createWeekData = (weekNumber: number, baseDate: Date): WeeklyTaskData => {
       // 过去的周
       const completed = Math.random() > 0.3;
       if (completed) {
-        return createDailyData(date, 'completed', 20 + Math.floor(Math.random() * 40));
+        return createDailyData(date, "completed", 20 + Math.floor(Math.random() * 40));
       } else {
-        return createDailyData(date, 'missed');
+        return createDailyData(date, "missed");
       }
     } else if (weekNumber === currentWeek) {
       // 当前周 - 根据今天是星期几来设置已完成状态
@@ -64,27 +60,27 @@ const createWeekData = (weekNumber: number, baseDate: Date): WeeklyTaskData => {
       // 今天之前的天应该是已完成或未完成状态
       if (index < todayIndex) {
         if (index < 2) {
-          return createDailyData(date, 'completed', 30 + index * 5);
+          return createDailyData(date, "completed", 30 + index * 5);
         } else if (index === 2) {
-          return createDailyData(date, 'missed');
+          return createDailyData(date, "missed");
         } else {
-          return createDailyData(date, 'completed', 25 + index * 3);
+          return createDailyData(date, "completed", 25 + index * 3);
         }
       } else if (index === todayIndex) {
         // 今天
-        return createDailyData(date, 'pending');
+        return createDailyData(date, "pending");
       } else {
         // 未来的天
-        return createDailyData(date, 'pending');
+        return createDailyData(date, "pending");
       }
     } else {
       // 未来的周
-      return createDailyData(date, 'pending');
+      return createDailyData(date, "pending");
     }
   });
 
   const totalCompleted = days
-    .filter((day) => day.status === 'completed' && day.duration)
+    .filter((day) => day.status === "completed" && day.duration)
     .reduce((sum, day) => sum + (day.duration || 0), 0);
 
   const completionRate =
@@ -116,9 +112,7 @@ export const createCycleData = (): TaskCycleData => {
   const completedWeeks = weeks.filter((w) => w.weekNumber < currentWeek);
   const overallCompletionRate =
     completedWeeks.length > 0
-      ? Math.round(
-          completedWeeks.reduce((sum, w) => sum + w.completionRate, 0) / completedWeeks.length
-        )
+      ? Math.round(completedWeeks.reduce((sum, w) => sum + w.completionRate, 0) / completedWeeks.length)
       : 0;
 
   // 计算连续打卡天数
@@ -139,26 +133,22 @@ export const createCurrentWeekData = (): WeeklyTaskData => {
 };
 
 // 更新每日数据
-export const updateDailyData = (
-  weekData: WeeklyTaskData,
-  date: Date,
-  duration: number
-): WeeklyTaskData => {
+export const updateDailyData = (weekData: WeeklyTaskData, date: Date, duration: number): WeeklyTaskData => {
   const updatedDays = weekData.days.map((day) => {
     if (day.date.toDateString() === date.toDateString()) {
       return {
         ...day,
-        status: 'completed' as const,
+        status: "completed" as const,
         duration,
         notes: `完成了 ${duration} 分钟的锻炼`,
-        workoutType: ['跑步', '力量训练', '瑜伽'][Math.floor(Math.random() * 3)],
+        workoutType: ["跑步", "力量训练", "瑜伽"][Math.floor(Math.random() * 3)],
       };
     }
     return day;
   });
 
   const totalCompleted = updatedDays
-    .filter((day) => day.status === 'completed' && day.duration)
+    .filter((day) => day.status === "completed" && day.duration)
     .reduce((sum, day) => sum + (day.duration || 0), 0);
 
   const completionRate = Math.round((totalCompleted / weekData.goal) * 100);

@@ -5,4 +5,4 @@ build
 *.min.js
 *.log
 expo-env.d.ts
-nativewind-env.d.ts
+pnpm-lock.yaml

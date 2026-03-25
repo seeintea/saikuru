@@ -1,14 +1,14 @@
-import { getToday } from '@/utils/date-utils';
-import { useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
-import CurrentWeekCard from './components/current-week-card';
-import Legend from './components/legend';
-import LogWorkoutModal from './components/log-workout-modal';
-import MonthlyCalendar from './components/monthly-calendar';
-import PageHeader from './components/page-header';
-import WeekDaysList from './components/week-days-list';
-import { DailyTaskData } from './types';
-import { createCycleData, updateDailyData } from './utils/mock-data';
+import { getToday } from "@/utils/date-utils";
+import { useState } from "react";
+import { ScrollView, StyleSheet, View } from "react-native";
+import CurrentWeekCard from "./components/current-week-card";
+import Legend from "./components/legend";
+import LogWorkoutModal from "./components/log-workout-modal";
+import MonthlyCalendar from "./components/monthly-calendar";
+import PageHeader from "./components/page-header";
+import WeekDaysList from "./components/week-days-list";
+import { DailyTaskData } from "./types";
+import { createCycleData, updateDailyData } from "./utils/mock-data";
 
 export default function TaskCyclePage() {
   const [cycleData, setCycleData] = useState(createCycleData());
@@ -41,12 +41,12 @@ export default function TaskCyclePage() {
 
   const handleDayPress = (weekNumber: number, dayIndex: number) => {
     // 可以用于点击某一天打开详情或记录
-    console.log('Day pressed in grid:', weekNumber, dayIndex);
+    console.log("Day pressed in grid:", weekNumber, dayIndex);
   };
 
   const handleCalendarDayPress = (date: Date) => {
     // 可以用于点击月视图日历的某一天
-    console.log('Day pressed in calendar:', date);
+    console.log("Day pressed in calendar:", date);
   };
 
   if (!currentWeekData) {
@@ -75,11 +75,7 @@ export default function TaskCyclePage() {
         </View>
       </ScrollView>
 
-      <LogWorkoutModal
-        visible={modalVisible}
-        onClose={handleCloseModal}
-        onSubmit={handleSubmitLog}
-      />
+      <LogWorkoutModal visible={modalVisible} onClose={handleCloseModal} onSubmit={handleSubmitLog} />
     </View>
   );
 }
@@ -87,7 +83,7 @@ export default function TaskCyclePage() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#151718',
+    backgroundColor: "#151718",
   },
   scrollContainer: {
     flex: 1,

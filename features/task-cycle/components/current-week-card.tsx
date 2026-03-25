@@ -1,6 +1,6 @@
-import { StyleSheet, Text, View } from 'react-native';
-import { WeeklyTaskData } from '@/features/task-cycle/types';
-import { formatDateRange, getRemainingDays } from '@/utils/date-utils';
+import { StyleSheet, Text, View } from "react-native";
+import { WeeklyTaskData } from "@/features/task-cycle/types";
+import { formatDateRange, getRemainingDays } from "@/utils/date-utils";
 
 interface CurrentWeekCardProps {
   weekData: WeeklyTaskData;
@@ -16,9 +16,7 @@ export default function CurrentWeekCard({ weekData }: CurrentWeekCardProps) {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.weekLabel}>当前周：第{weekData.weekNumber}周</Text>
-        <Text style={styles.dateRange}>
-          {formatDateRange(weekData.startDate, weekData.endDate)}
-        </Text>
+        <Text style={styles.dateRange}>{formatDateRange(weekData.startDate, weekData.endDate)}</Text>
       </View>
 
       <View style={styles.statsRow}>
@@ -58,91 +56,91 @@ export default function CurrentWeekCard({ weekData }: CurrentWeekCardProps) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#1E1E1E',
+    backgroundColor: "#1E1E1E",
     borderRadius: 16,
     padding: 16,
     borderWidth: 1,
-    borderColor: '#3D3D3D',
+    borderColor: "#3D3D3D",
     marginHorizontal: 16,
   },
   header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginBottom: 16,
   },
   weekLabel: {
-    color: '#ECEDEE',
+    color: "#ECEDEE",
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   dateRange: {
-    color: '#9BA1A6',
+    color: "#9BA1A6",
     fontSize: 14,
   },
   statsRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+    flexDirection: "row",
+    justifyContent: "space-around",
     marginBottom: 16,
   },
   statItem: {
-    alignItems: 'center',
+    alignItems: "center",
     flex: 1,
   },
   statDivider: {
     width: 1,
-    backgroundColor: '#3D3D3D',
+    backgroundColor: "#3D3D3D",
     marginHorizontal: 8,
   },
   statLabel: {
-    color: '#9BA1A6',
+    color: "#9BA1A6",
     fontSize: 12,
     marginBottom: 4,
   },
   statValue: {
-    color: '#ECEDEE',
+    color: "#ECEDEE",
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   statValueCompleted: {
-    color: '#A3FF00',
+    color: "#A3FF00",
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   statValueRemaining: {
-    color: '#FFD700',
+    color: "#FFD700",
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   progressSection: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 12,
   },
   progressBar: {
     flex: 1,
     height: 12,
-    backgroundColor: '#2D2D2D',
+    backgroundColor: "#2D2D2D",
     borderRadius: 6,
     marginRight: 12,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   progressFill: {
-    height: '100%',
-    backgroundColor: '#A3FF00',
+    height: "100%",
+    backgroundColor: "#A3FF00",
     borderRadius: 6,
   },
   percentText: {
-    color: '#A3FF00',
+    color: "#A3FF00",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     minWidth: 40,
   },
   footer: {
-    alignItems: 'center',
+    alignItems: "center",
   },
   footerText: {
-    color: '#9BA1A6',
+    color: "#9BA1A6",
     fontSize: 14,
   },
 });

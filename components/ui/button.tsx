@@ -1,6 +1,6 @@
-import type { WithViewStyle } from '@/types';
-import { ReactNode } from 'react';
-import { type GestureResponderEvent, StyleSheet, TouchableOpacity } from 'react-native';
+import type { WithViewStyle } from "@/types";
+import { ReactNode } from "react";
+import { type GestureResponderEvent, StyleSheet, TouchableOpacity } from "react-native";
 
 interface ButtonProps extends WithViewStyle {
   children: ReactNode;
@@ -18,9 +18,9 @@ export function Button({ style, children, onPress }: ButtonProps) {
 const styles = StyleSheet.create({
   button: {
     height: 32,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#c6ff00',
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#c6ff00",
     borderRadius: 32,
     paddingInline: 16,
     fontSize: 14,

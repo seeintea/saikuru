@@ -42,6 +42,7 @@ app-example
 /ios
 /android
 
-# Skills (restore with `npx skills experimental_install`)
+# Skills (restore with `pnpm run skills [command]`)
 .agents/
 .claude/skills/
+.claude/settings.local.json

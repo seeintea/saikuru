@@ -20,9 +20,10 @@ export function Input({ bodyStyle, style, placeholderTextColor, ...other }: Inpu
       <TextInput
         ref={inputRef}
         style={[styles.input, webStyle, style]}
-        selectionColor="transparent"
+        selectionColor="#A3FF00"
         placeholderTextColor={placeholderTextColor || "#6c7180"}
         underlineColorAndroid="transparent"
+        textAlignVertical="center"
         {...other}
       />
     </Pressable>
@@ -37,9 +38,18 @@ const styles = StyleSheet.create({
     backgroundColor: "#131313",
   },
   input: {
-    height: 16,
+    height: Platform.select({
+      web: 16,
+      android: 38, // todo fix
+      ios: 16,
+    }),
     fontSize: 16,
     color: "#ffffff",
     fontFamily: FONTS.alibabaPuHui,
+    ...Platform.select({
+      android: {
+        textAlignVertical: "center",
+      },
+    }),
   },
 });

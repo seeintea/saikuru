@@ -1,5 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { InputNumber } from "@/components/ui/input-number";
+import { Segmented } from "@/components/ui/segmented";
 import { FONTS } from "@/hooks/use-custom-fonts";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { Heading } from "./components/heading";
@@ -15,17 +17,24 @@ export function TabsCreate() {
         <Input
           placeholder="例如：每日高强度训练"
           multiline
-          numberOfLines={4}
+          numberOfLines={3}
           textAlignVertical="top"
           style={styles["basic-textarea"]}
         />
       </View>
       <Heading title="周期设置" />
       <Card>
-        <View>
-          <Text>111</Text>
-        </View>
+        <Segmented
+          options={[
+            { key: "day", label: "天" },
+            { key: "week", label: "周" },
+            { key: "month", label: "月" },
+          ]}
+          defaultValue="day"
+          onChange={(value) => console.log("Selected:", value)}
+        />
       </Card>
+      <InputNumber />
     </ScrollView>
   );
 }

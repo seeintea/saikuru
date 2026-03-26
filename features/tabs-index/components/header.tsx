@@ -58,7 +58,6 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.dingTalkJinBuTi,
   },
   button: {
-    color: "#485e00",
     fontWeight: 600,
     flexDirection: "row",
     alignItems: "center",
@@ -66,7 +65,6 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   ["button-label"]: {
-    color: "#485e00",
     fontWeight: "600",
     fontSize: 14,
   },

@@ -4,5 +4,5 @@
     "source.organizeImports": "explicit",
     "source.sortMembers": "explicit"
   },
-  "cSpell.words": ["saikuru", "worklets", "alimama"]
+  "cSpell.words": ["saikuru", "worklets", "alimama", "Pressable"]
 }

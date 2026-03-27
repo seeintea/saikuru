@@ -54,8 +54,6 @@ type: project
 ## Commit Guidelines
 
 Commit messages should clearly communicate changes. A complete commit should include:
+
 1. Concise title following Conventional Commits format
 2. Detailed body describing what was changed and why
-3. List of specific files or components modified
-4. Key features or improvements implemented
-5. Any breaking changes or important notes

@@ -1,55 +1,57 @@
 import { FONTS } from "@/hooks/use-custom-fonts";
 import { ViewStyleProps } from "@/types";
+import { X } from "lucide-react-native";
 import { useRef } from "react";
-import { Platform, Pressable, StyleSheet, TextInput, type TextInputProps } from "react-native";
+import { Pressable, StyleSheet, TextInput, View, type TextInputProps } from "react-native";
 
 interface InputProps extends TextInputProps {
   bodyStyle?: ViewStyleProps;
 }
-
-const webStyle = Platform.select({
-  web: { outline: "none" },
-  default: undefined,
-});
 
 export function Input({ bodyStyle, style, placeholderTextColor, ...other }: InputProps) {
   const inputRef = useRef<TextInput>(null);
 
   return (
     <Pressable style={[styles.container, bodyStyle]} onPress={() => inputRef.current?.focus()}>
-      <TextInput
-        ref={inputRef}
-        style={[styles.input, webStyle, style]}
-        selectionColor="#A3FF00"
-        placeholderTextColor={placeholderTextColor || "#6c7180"}
-        underlineColorAndroid="transparent"
-        textAlignVertical="center"
-        {...other}
-      />
+      <View style={styles.content}>
+        <TextInput
+          ref={inputRef}
+          style={[styles.input, style]}
+          selectionColor="#a3ff00"
+          placeholderTextColor={placeholderTextColor || "#6c7180"}
+          underlineColorAndroid="transparent"
+          {...other}
+        />
+        <View style={styles.closed}>
+          <X color={"#ffffff"} size={16} />
+        </View>
+      </View>
     </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: 32,
+    height: 48,
+    justifyContent: "center",
+    borderRadius: 36,
     paddingInline: 24,
-    paddingBlock: 18,
     backgroundColor: "#131313",
   },
+  content: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  closed: {
+    padding: 2,
+    borderRadius: 64,
+    backgroundColor: "#000",
+  },
   input: {
-    height: Platform.select({
-      web: 16,
-      android: 38, // todo fix
-      ios: 16,
-    }),
+    flex: 1,
     fontSize: 16,
     color: "#ffffff",
     fontFamily: FONTS.alibabaPuHui,
-    ...Platform.select({
-      android: {
-        textAlignVertical: "center",
-      },
-    }),
+    paddingVertical: 0,
   },
 });

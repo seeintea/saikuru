@@ -17,7 +17,7 @@ const webStyle = Platform.select({
   default: undefined,
 });
 
-export function InputNumber({
+export function InputSpinner({
   style = {},
   value,
   defaultValue = 1,
@@ -135,14 +135,5 @@ const styles = StyleSheet.create({
     height: "auto",
     minHeight: 36,
     backgroundColor: "transparent",
-    width: "100%",
-    alignSelf: "center",
-    ...Platform.select({
-      android: {
-        textAlignVertical: "center",
-        paddingVertical: 0,
-        paddingHorizontal: 0,
-      },
-    }),
   },
 });

@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { InputNumber } from "@/components/ui/input-number";
+import { InputSpinner } from "@/components/ui/input-spinner";
 import { Segmented } from "@/components/ui/segmented";
 import { FONTS } from "@/hooks/use-custom-fonts";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
@@ -19,7 +19,7 @@ export function TabsCreate() {
           multiline
           numberOfLines={3}
           textAlignVertical="top"
-          style={styles["basic-textarea"]}
+          bodyStyle={styles["basic-textarea"]}
         />
       </View>
       <Heading title="周期设置" />
@@ -34,7 +34,7 @@ export function TabsCreate() {
           onChange={(value) => console.log("Selected:", value)}
         />
       </Card>
-      <InputNumber />
+      <InputSpinner />
     </ScrollView>
   );
 }
@@ -50,6 +50,8 @@ const styles = StyleSheet.create({
     fontWeight: 600,
   },
   ["basic-textarea"]: {
-    height: "auto",
+    height: 96,
+    justifyContent: "flex-start",
+    paddingTop: 12,
   },
 });

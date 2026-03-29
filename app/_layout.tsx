@@ -1,7 +1,7 @@
 import { useCustomFonts } from "@/hooks/use-custom-fonts";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet } from "react-native";
+import { setBackgroundColorAsync } from "expo-system-ui";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import "react-native-reanimated";
@@ -14,8 +14,10 @@ export const unstable_settings = {
 export default function RootLayout() {
   useCustomFonts();
 
+  setBackgroundColorAsync("#141414");
+
   return (
-    <SafeAreaView style={styles.root}>
+    <SafeAreaView className={"flex-1 w-full bg-background"} style={{ height: "100%" }}>
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="records" options={{ headerShown: false }} />
@@ -24,12 +26,3 @@ export default function RootLayout() {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    height: "100%",
-    width: "100%",
-    backgroundColor: "#0e0e0e",
-  },
-});

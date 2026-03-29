@@ -37,7 +37,11 @@ export function TabsIndex() {
   return (
     <View style={{ flex: 1 }}>
       <Header style={common.px24} />
-      <ScrollView style={{ flex: 1, paddingBottom: tabPaddingBottom }}>
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={{ paddingBottom: tabPaddingBottom }}
+        showsVerticalScrollIndicator={false}
+      >
         <Summary
           style={[common.mt24, common.mx24]}
           cycleConfig={sampleCycleConfig}

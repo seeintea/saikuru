@@ -8,7 +8,10 @@ import { Heading } from "./components/heading";
 
 export function TabsCreate() {
   return (
-    <ScrollView style={{ flex: 1, width: "100%", padding: 24 }}>
+    <ScrollView
+      style={{ flex: 1, width: "100%", padding: 24 }}
+      showsVerticalScrollIndicator={false}
+    >
       <Heading title="基本信息" />
       <View style={styles.basic}>
         <Text style={styles["basic-label"]}>任务名称</Text>

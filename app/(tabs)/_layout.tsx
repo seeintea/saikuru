@@ -2,7 +2,7 @@ import type { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { Tabs } from "expo-router";
 import { LayersPlus, type LucideIcon, Target, User } from "lucide-react-native";
 import { useEffect, useRef, useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from "react-native-reanimated";
 
 const tabs = [
@@ -21,10 +21,16 @@ export default function TabLayout() {
   );
 }
 
+interface TabMeasurement {
+  x: number;
+  width: number;
+  height: number;
+}
+
 function CustomTabBar({ state, navigation }: BottomTabBarProps) {
   const activeIndex = useSharedValue(state.index);
-  const isFirstLoad = useSharedValue(true); // 线程安全的共享值
-  const [tabMeasurements, setTabMeasurements] = useState<{ width: number; x: number }[]>([]);
+  const isFirstLoad = useSharedValue(true);
+  const [tabMeasurements, setTabMeasurements] = useState<TabMeasurement[]>([]);
   const tabRefs = useRef<(View | null)[]>([]);
 
   // 监听 state.index 变化，确保 activeIndex 与当前选中的 tab 同步
@@ -39,10 +45,10 @@ function CustomTabBar({ state, navigation }: BottomTabBarProps) {
   };
 
   const handleTabLayout = (index: number, event: any) => {
-    const { width, x } = event.nativeEvent.layout;
-    setTabMeasurements((prev: { width: number; x: number }[]) => {
+    const { width, x, height } = event.nativeEvent.layout;
+    setTabMeasurements((prev: TabMeasurement[]) => {
       const newMeasurements = [...prev];
-      newMeasurements[index] = { width, x };
+      newMeasurements[index] = { width, x, height };
       // 当所有 tab 都测量完成后，标记首次加载完成
       if (newMeasurements.filter(Boolean).length === tabs.length) {
         // 使用 setTimeout 确保在下次事件循环中设置，让初始位置先渲染
@@ -60,6 +66,7 @@ function CustomTabBar({ state, navigation }: BottomTabBarProps) {
       return {
         transform: [{ translateX: 0 }],
         width: 0,
+        height: 0,
       };
     }
 
@@ -68,29 +75,29 @@ function CustomTabBar({ state, navigation }: BottomTabBarProps) {
       return {
         transform: [{ translateX: currentMeasurement.x }],
         width: currentMeasurement.width,
+        height: currentMeasurement.height,
       };
     }
 
-    // 非首次加载时使用弹簧动画
-    const translateX = withSpring(currentMeasurement.x, {
-      damping: 40,
-      stiffness: 500,
-    });
-    const width = withSpring(currentMeasurement.width, {
-      damping: 40,
-      stiffness: 500,
-    });
+    const springConf = { damping: 40, stiffness: 500 };
+    const translateX = withSpring(currentMeasurement.x, springConf);
+    const width = withSpring(currentMeasurement.width, springConf);
+    const height = withSpring(currentMeasurement.height, springConf);
 
     return {
       transform: [{ translateX }],
       width,
+      height,
     };
   });
 
   return (
-    <View style={styles.container}>
-      <View style={styles["tab-bar"]}>
-        <Animated.View style={[styles["active-indicator"], indicatorStyle]} />
+    <View className={"absolute bottom-0 left-0 right-0 items-center mb-2"}>
+      <View className={"rounded-full flex-row items-center justify-center py-1 px-1 bg-card/95"}>
+        <Animated.View
+          className={"absolute top-1 left-0 rounded-full bg-primary/15"}
+          style={indicatorStyle}
+        />
         {tabs.map((tab, index) => {
           const isActive = state.routes[state.index].name === tab.key;
           return (
@@ -126,54 +133,15 @@ function TabBarButton({ label, icon: Icon, isActive, onPress }: TabBarButtonProp
   const activeCtxColor = isActive ? "#a3ff00" : "#9ba1A6";
 
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.9} style={styles["tab-item"]}>
+    <TouchableOpacity
+      onPress={onPress}
+      activeOpacity={0.75}
+      className={"items-center gap-1 py-2 px-9 rounded-full z-10"}
+    >
       <Icon size={24} color={activeCtxColor} strokeWidth={2.5} />
-      <Text style={[styles["tab-label"], { color: activeCtxColor, fontWeight: isActive ? "600" : "500" }]}>
+      <Text className={"text-xs"} style={[{ color: activeCtxColor, fontWeight: isActive ? "600" : "500" }]}>
         {label}
       </Text>
     </TouchableOpacity>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
-    alignItems: "center",
-    marginBottom: 8,
-  },
-  ["tab-bar"]: {
-    borderRadius: 100,
-    backgroundColor: "rgba(38, 38, 38, 0.7)",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: 6,
-    paddingInline: 4,
-    gap: 4,
-    position: "relative",
-  },
-  ["active-indicator"]: {
-    position: "absolute",
-    top: 4,
-    left: 0,
-    borderRadius: 100,
-    backgroundColor: "rgba(163, 255, 0, 0.15)",
-    height: 60,
-  },
-  // tab button
-  ["tab-item"]: {
-    alignItems: "center",
-    paddingVertical: 8,
-    marginVertical: 4,
-    borderRadius: 100,
-    paddingHorizontal: 36,
-    zIndex: 1,
-  },
-  ["tab-label"]: {
-    fontSize: 12,
-    paddingTop: 4,
-  },
-});

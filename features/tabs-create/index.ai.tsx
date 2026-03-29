@@ -71,7 +71,7 @@ export function TabsCreate() {
 
   return (
     <View style={styles.container}>
-      <ScrollView style={{ flex: 1 }}>
+      <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
         {/* 页面标题 */}
         <Text style={styles.title}>创建任务</Text>
 

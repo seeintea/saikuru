@@ -1,7 +1,7 @@
 import { FONTS } from "@/hooks/use-custom-fonts";
 import { WithViewStyle } from "@/types";
 import { useState } from "react";
-import { Platform, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { Pressable, Text, TextInput, View } from "react-native";
 
 interface InputNumberProps extends WithViewStyle {
   value?: number;
@@ -11,11 +11,6 @@ interface InputNumberProps extends WithViewStyle {
   max?: number;
   step?: number;
 }
-
-const webStyle = Platform.select({
-  web: { outline: "none" },
-  default: undefined,
-});
 
 export function InputSpinner({
   style = {},
@@ -70,14 +65,15 @@ export function InputSpinner({
   };
 
   return (
-    <View style={[styles.container, style]}>
-      <Pressable style={styles.button} onPress={handleDecrement}>
-        <Text style={styles["button-text"]}>−</Text>
+    <View style={style} className="flex-row bg-card rounded-full p-2 items-center justify-between">
+      <Pressable onPress={handleDecrement} className="px-6 py-2 items-center justify-center">
+        <Text className={"text-4xl font-bold text-primary"} style={{ fontFamily: FONTS.alibabaPuHui }}>
+          -
+        </Text>
       </Pressable>
 
-      <View style={styles["input-container"]}>
+      <View className={"flex-1 items-center justify-center"}>
         <TextInput
-          style={[styles.input, webStyle]}
           value={inputText}
           onChangeText={handleChangeText}
           onEndEditing={handleEndEditing}
@@ -85,55 +81,19 @@ export function InputSpinner({
           textAlign="center"
           placeholder={String(defaultValue)}
           placeholderTextColor="#666666"
-          selectionColor="#A3FF00"
+          selectionColor="#a3ff00"
           underlineColorAndroid="transparent"
           textAlignVertical="center"
+          className={"text-4xl font-bold text-white bg-transparent"}
+          style={{ textAlign: "center", fontFamily: FONTS.alibabaPuHui }}
         />
       </View>
 
-      <Pressable style={styles.button} onPress={handleIncrement}>
-        <Text style={styles["button-text"]}>+</Text>
+      <Pressable onPress={handleIncrement} className="px-6 py-2 items-center justify-center">
+        <Text className={"text-4xl font-bold text-primary"} style={{ fontFamily: FONTS.alibabaPuHui }}>
+          +
+        </Text>
       </Pressable>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-    backgroundColor: "#2a2a2a",
-    borderRadius: 32,
-    padding: 8,
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  button: {
-    paddingHorizontal: 24,
-    paddingVertical: 8,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  ["button-text"]: {
-    fontSize: 32,
-    fontWeight: "300",
-    color: "#A3FF00",
-    fontFamily: FONTS.alibabaPuHui,
-    lineHeight: 36,
-  },
-  ["input-container"]: {
-    flex: 1,
-    minWidth: 60,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  input: {
-    fontSize: 32,
-    fontWeight: "600",
-    color: "#ffffff",
-    fontFamily: FONTS.alibabaPuHui,
-    textAlign: "center",
-    height: "auto",
-    minHeight: 36,
-    backgroundColor: "transparent",
-  },
-});

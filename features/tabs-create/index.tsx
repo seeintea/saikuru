@@ -1,5 +1,4 @@
-import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import { Input, TextArea } from "@/components/ui/input";
 import { InputSpinner } from "@/components/ui/input-spinner";
 import { Segmented } from "@/components/ui/segmented";
 import { FONTS } from "@/hooks/use-custom-fonts";
@@ -8,25 +7,16 @@ import { Heading } from "./components/heading";
 
 export function TabsCreate() {
   return (
-    <ScrollView
-      style={{ flex: 1, width: "100%", padding: 24 }}
-      showsVerticalScrollIndicator={false}
-    >
+    <ScrollView className={"flex-1 w-full p-6"} showsVerticalScrollIndicator={false}>
       <Heading title="基本信息" />
-      <View style={styles.basic}>
+      <View className={"gap-4"}>
         <Text style={styles["basic-label"]}>任务名称</Text>
         <Input placeholder="例如：每日高强度训练" />
         <Text style={styles["basic-label"]}>任务描述</Text>
-        <Input
-          placeholder="例如：每日高强度训练"
-          multiline
-          numberOfLines={3}
-          textAlignVertical="top"
-          bodyStyle={styles["basic-textarea"]}
-        />
+        <TextArea placeholder="例如：每日高强度训练" classNames={{ body: "h-24" }} />
       </View>
       <Heading title="周期设置" />
-      <Card>
+      <View className={"gap-4"}>
         <Segmented
           options={[
             { key: "day", label: "天" },
@@ -36,16 +26,13 @@ export function TabsCreate() {
           defaultValue="day"
           onChange={(value) => console.log("Selected:", value)}
         />
-      </Card>
-      <InputSpinner />
+        <InputSpinner />
+      </View>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  basic: {
-    gap: 12,
-  },
   ["basic-label"]: {
     fontSize: 12,
     color: "#767575",

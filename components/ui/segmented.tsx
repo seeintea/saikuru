@@ -1,8 +1,8 @@
 import { FONTS } from "@/hooks/use-custom-fonts";
 import { WithViewStyle } from "@/types";
-import { useState, useEffect } from "react";
-import { Pressable, StyleSheet, Text, View, LayoutChangeEvent } from "react-native";
-import Animated, { useAnimatedStyle, useSharedValue, withSpring } from "react-native-reanimated";
+import { useEffect, useState } from "react";
+import { LayoutChangeEvent, Pressable, Text, View } from "react-native";
+import Animated, { Easing, useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
 
 export interface SegmentedOption {
   key: string;
@@ -19,115 +19,98 @@ export function Segmented({ style = {}, options, defaultValue, onChange }: Segme
   const [selectedKey, setSelectedKey] = useState<string>(
     defaultValue || (options.length > 0 ? options[0].key : "")
   );
-  const [buttonWidth, setButtonWidth] = useState<number>(0);
+  const [displayKey, setDisplayKey] = useState<string>(
+    defaultValue || (options.length > 0 ? options[0].key : "")
+  );
   const [containerWidth, setContainerWidth] = useState<number>(0);
   const translateX = useSharedValue(0);
+  const isFirstLoad = useSharedValue(true);
 
-  // 计算选中按钮的位置
-  const getSelectedIndex = () => options.findIndex(option => option.key === selectedKey);
+  const getSelectedIndex = () => options.findIndex((option) => option.key === selectedKey);
 
-  // 更新动画位置
-  const updateTranslateX = () => {
+  const updateIndicator = () => {
     const selectedIndex = getSelectedIndex();
-    translateX.value = withSpring(selectedIndex * buttonWidth);
+    const buttonWidth = containerWidth > 0 ? containerWidth / options.length : 0;
+    const targetX = selectedIndex * buttonWidth;
+
+    if (isFirstLoad.value) {
+      translateX.value = targetX;
+    } else {
+      translateX.value = withTiming(targetX, {
+        duration: 300,
+        easing: Easing.out(Easing.ease),
+      });
+    }
   };
 
-  // 测量按钮宽度
-  const handleButtonLayout = (event: LayoutChangeEvent) => {
-    const width = event.nativeEvent.layout.width;
-    setButtonWidth(width);
-  };
-
-  // 测量容器宽度
   const handleContainerLayout = (event: LayoutChangeEvent) => {
     const width = event.nativeEvent.layout.width;
     setContainerWidth(width);
   };
 
-  // 初始化动画位置
   useEffect(() => {
-    if (buttonWidth > 0) {
-      updateTranslateX();
+    if (containerWidth > 0) {
+      updateIndicator();
+      isFirstLoad.value = false;
     }
-  }, [buttonWidth]);
+  }, [containerWidth]);
 
-  // 当选中值变化时更新动画
   useEffect(() => {
-    updateTranslateX();
+    if (!isFirstLoad.value && containerWidth > 0) {
+      updateIndicator();
+    }
   }, [selectedKey]);
 
   const handlePress = (key: string) => {
+    if (key === selectedKey) return;
     setSelectedKey(key);
     onChange(key);
+    setDisplayKey(key);
   };
 
-  // 动画样式
+  const buttonWidth = containerWidth > 0 ? containerWidth / options.length : 0;
+
   const animatedStyle = useAnimatedStyle(() => {
     return {
       transform: [{ translateX: translateX.value }],
-      width: buttonWidth > 0 ? buttonWidth : "100%",
+      width: buttonWidth,
     };
   });
 
   return (
-    <View style={[styles.container, style]} onLayout={handleContainerLayout}>
-      {/* 滑动的选中背景 */}
-      <Animated.View style={[styles.activeBackground, animatedStyle]} />
-
-      {options.map((option, index) => {
-        const isSelected = selectedKey === option.key;
-
-        return (
-          <Pressable
-            key={option.key}
-            style={styles.button}
-            onLayout={index === 0 ? handleButtonLayout : undefined}
-            onPress={() => handlePress(option.key)}
-          >
-            <Text style={[styles.text, isSelected ? styles["selected-text"] : styles["unselected-text"]]}>
-              {option.label}
-            </Text>
-          </Pressable>
-        );
-      })}
+    <View className={" bg-card rounded-full p-1"}>
+      <View
+        className={"flex-1 flex-row items-center justify-center relative"}
+        onLayout={handleContainerLayout}
+        style={style}
+      >
+        {containerWidth > 0 && (
+          <Animated.View
+            className={"absolute left-0 top-0 bottom-0 bg-primary rounded-full"}
+            style={[animatedStyle]}
+          />
+        )}
+        {options.map((option) => {
+          const isActive = displayKey === option.key;
+          return (
+            <Pressable
+              key={option.key}
+              className={"py-3 flex-1 items-center justify-center"}
+              onPress={() => handlePress(option.key)}
+            >
+              <Text
+                className={"text-base font-medium z-10"}
+                style={{
+                  fontFamily: FONTS.alibabaPuHui,
+                  color: isActive ? "#000000" : "#9ba1a6",
+                }}
+              >
+                {option.label}
+              </Text>
+            </Pressable>
+          );
+        })}
+      </View>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-    backgroundColor: "#2a2a2a",
-    borderRadius: 32,
-    padding: 4,
-    alignItems: "center",
-  },
-  button: {
-    flex: 1,
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 32,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  activeBackground: {
-    position: "absolute",
-    top: 4,
-    left: 4,
-    bottom: 4,
-    borderRadius: 32,
-    backgroundColor: "#a3ff00",
-  },
-  text: {
-    fontSize: 16,
-    fontWeight: 600,
-    fontFamily: FONTS.alibabaPuHui,
-    zIndex: 1,
-  },
-  ["selected-text"]: {
-    color: "#000000",
-  },
-  ["unselected-text"]: {
-    color: "#888888",
-  },
-});

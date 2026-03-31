@@ -1,5 +1,5 @@
 import { FONTS } from "@/hooks/use-custom-fonts";
-import { colorBackground, colorPrimary } from "@/theme";
+import { colorBackground, colorPlaceholder, colorPrimary } from "@/theme";
 import { cn } from "@/utils/cn";
 import { X } from "lucide-react-native";
 import { useRef, useState } from "react";
@@ -45,8 +45,8 @@ function BaseInput({
   };
 
   const handleClear = () => {
-    handleChangeText("");
     inputRef.current?.focus();
+    handleChangeText("");
   };
 
   return (
@@ -54,17 +54,17 @@ function BaseInput({
       activeOpacity={1}
       onPress={() => inputRef.current?.focus()}
       className={cn(
-        "flex-row items-center justify-center px-4 py-3 border border-input relative",
+        "flex-row items-center justify-center px-4 py-3 border border-input",
         isMultiline ? "items-start rounded-3xl" : "items-center rounded-4xl",
         classNames?.body
       )}
     >
       <TextInput
         ref={inputRef}
-        className={cn("flex-1 text-base text-white p-0", classNames?.input)}
+        className={cn("flex-1 text-base text-foreground p-0", classNames?.input)}
         style={[{ fontFamily: FONTS.alibabaPuHui }]}
         selectionColor={colorPrimary}
-        placeholderTextColor={placeholderTextColor || "#6c7180"}
+        placeholderTextColor={placeholderTextColor || colorPlaceholder}
         underlineColorAndroid="transparent"
         value={value}
         onChangeText={handleChangeText}
@@ -75,16 +75,13 @@ function BaseInput({
       />
       {value ? (
         <View className="ml-3 relative">
-          <View className="p-0.5 bg-card rounded-full">
+          <View className={cn("p-0.5 bg-card rounded-full", isMultiline ? "mt-0.5" : "")}>
             <X color={colorBackground} size={14} />
           </View>
           <TouchableOpacity
-            onPress={(e) => {
-              e.stopPropagation();
-              handleClear();
-            }}
+            onPressIn={handleClear}
             activeOpacity={1}
-            className="absolute inset-0 w-8 h-12 -ml-3.5 -mt-1.5 z-50"
+            className="absolute w-12 h-12 z-50 -mt-3.5 -ml-3"
           />
         </View>
       ) : null}

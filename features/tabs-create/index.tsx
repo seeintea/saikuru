@@ -7,7 +7,11 @@ import { Heading } from "./components/heading";
 
 export function TabsCreate() {
   return (
-    <ScrollView className={"flex-1 w-full p-6"} showsVerticalScrollIndicator={false}>
+    <ScrollView
+      className={"flex-1 w-full p-6"}
+      showsVerticalScrollIndicator={false}
+      keyboardShouldPersistTaps="handled"
+    >
       <Heading title="基本信息" />
       <View className={"gap-4"}>
         <Text style={styles["basic-label"]}>任务名称</Text>

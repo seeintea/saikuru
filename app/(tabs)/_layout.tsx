@@ -1,3 +1,4 @@
+import { colorPrimary, colorSecondary } from "@/theme";
 import type { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { Tabs } from "expo-router";
 import { LayersPlus, type LucideIcon, Target, User } from "lucide-react-native";
@@ -130,7 +131,7 @@ interface TabBarButtonProps {
 }
 
 function TabBarButton({ label, icon: Icon, isActive, onPress }: TabBarButtonProps) {
-  const activeCtxColor = isActive ? "#a3ff00" : "#9ba1A6";
+  const activeCtxColor = isActive ? colorPrimary : colorSecondary;
 
   return (
     <TouchableOpacity

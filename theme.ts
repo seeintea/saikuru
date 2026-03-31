@@ -1,5 +1,9 @@
 export const colorPrimary = "#a3ff00";
 export const colorPrimaryForeground = "#485e00";
+export const colorSecondary = "#9ba1a6";
+export const colorSecondaryForeground = "#000000";
 export const colorCard = "#1f1f1f";
 export const colorBackground = "#141414";
+export const colorForeground = "#ffffff";
 export const colorInput = "#424242";
+export const colorPlaceholder = "#6c7180";

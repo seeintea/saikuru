@@ -1,7 +1,8 @@
 import { FONTS } from "@/hooks/use-custom-fonts";
+import { colorPlaceholder, colorPrimary } from "@/theme";
 import { WithViewStyle } from "@/types";
-import { useState } from "react";
-import { Pressable, Text, TextInput, View } from "react-native";
+import { useRef, useState } from "react";
+import { Keyboard, Pressable, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 interface InputNumberProps extends WithViewStyle {
   value?: number;
@@ -10,6 +11,7 @@ interface InputNumberProps extends WithViewStyle {
   min?: number;
   max?: number;
   step?: number;
+  inputHeight?: number;
 }
 
 export function InputSpinner({
@@ -20,13 +22,16 @@ export function InputSpinner({
   min = 0,
   max = Number.MAX_SAFE_INTEGER,
   step = 1,
+  inputHeight = 52,
 }: InputNumberProps) {
+  const inputRef = useRef<TextInput>(null);
   const [internalValue, setInternalValue] = useState<number>(defaultValue);
   const [inputText, setInputText] = useState<string>(String(defaultValue));
 
   const currentValue = value !== undefined ? value : internalValue;
 
   const handleDecrement = () => {
+    Keyboard.dismiss();
     const newValue = Math.max(min, currentValue - step);
     if (onChange) {
       onChange(newValue);
@@ -36,6 +41,7 @@ export function InputSpinner({
   };
 
   const handleIncrement = () => {
+    Keyboard.dismiss();
     const newValue = Math.min(max, currentValue + step);
     if (onChange) {
       onChange(newValue);
@@ -67,30 +73,40 @@ export function InputSpinner({
   return (
     <View style={style} className="flex-row bg-card rounded-full p-2 items-center justify-between">
       <Pressable onPress={handleDecrement} className="px-6 py-2 items-center justify-center">
-        <Text className={"text-4xl font-bold text-primary"} style={{ fontFamily: FONTS.alibabaPuHui }}>
+        <Text className="text-4xl font-bold text-primary" style={{ fontFamily: FONTS.alibabaPuHui }}>
           -
         </Text>
       </Pressable>
 
-      <View className={"flex-1 items-center justify-center"}>
+      <TouchableOpacity
+        className="flex-1 items-center justify-center"
+        onPress={() => inputRef.current?.focus()}
+        activeOpacity={1}
+      >
         <TextInput
+          ref={inputRef}
           value={inputText}
           onChangeText={handleChangeText}
           onEndEditing={handleEndEditing}
           keyboardType="numeric"
           textAlign="center"
           placeholder={String(defaultValue)}
-          placeholderTextColor="#666666"
-          selectionColor="#a3ff00"
+          placeholderTextColor={colorPlaceholder}
+          selectionColor={colorPrimary}
           underlineColorAndroid="transparent"
           textAlignVertical="center"
-          className={"text-4xl font-bold text-white bg-transparent"}
-          style={{ textAlign: "center", fontFamily: FONTS.alibabaPuHui }}
+          className="text-4xl font-bold text-foreground bg-transparent p-0"
+          style={{
+            textAlign: "center",
+            fontFamily: FONTS.alibabaPuHui,
+            height: inputHeight,
+            lineHeight: inputHeight,
+          }}
         />
-      </View>
+      </TouchableOpacity>
 
       <Pressable onPress={handleIncrement} className="px-6 py-2 items-center justify-center">
-        <Text className={"text-4xl font-bold text-primary"} style={{ fontFamily: FONTS.alibabaPuHui }}>
+        <Text className="text-4xl font-bold text-primary" style={{ fontFamily: FONTS.alibabaPuHui }}>
           +
         </Text>
       </Pressable>

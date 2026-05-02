@@ -95,10 +95,7 @@ export async function createTask(input: CreateTaskInput): Promise<Task> {
   };
 }
 
-export async function updateTask(
-  id: string,
-  input: UpdateTaskInput
-): Promise<void> {
+export async function updateTask(id: string, input: UpdateTaskInput): Promise<void> {
   const db = await getDatabase();
   const now = new Date().toISOString();
 
@@ -148,10 +145,7 @@ export async function updateTask(
   values.push(now);
   values.push(id);
 
-  await db.runAsync(
-    `UPDATE tasks SET ${fields.join(", ")} WHERE id = ?`,
-    ...values
-  );
+  await db.runAsync(`UPDATE tasks SET ${fields.join(", ")} WHERE id = ?`, ...values);
 }
 
 export async function deleteTask(id: string): Promise<void> {

@@ -6,10 +6,7 @@
 import { getDatabase } from "@server/db/connection";
 import type { DailyRecord, CreateRecordInput } from "@server/models";
 
-export async function getRecordsByTaskAndDate(
-  taskId: string,
-  date: string
-): Promise<DailyRecord[]> {
+export async function getRecordsByTaskAndDate(taskId: string, date: string): Promise<DailyRecord[]> {
   const db = await getDatabase();
   return db.getAllAsync<DailyRecord>(
     `SELECT
@@ -114,10 +111,7 @@ export async function updateRecord(
   values.push(now);
   values.push(id);
 
-  await db.runAsync(
-    `UPDATE daily_records SET ${fields.join(", ")} WHERE id = ?`,
-    ...values
-  );
+  await db.runAsync(`UPDATE daily_records SET ${fields.join(", ")} WHERE id = ?`, ...values);
 }
 
 export async function deleteRecord(id: string): Promise<void> {

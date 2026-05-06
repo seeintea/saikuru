@@ -41,3 +41,6 @@ app-example
 # generated native folders
 /ios
 /android
+
+# externally installed skills (rebuild via skills-lock.json)
+.claude/skills/vercel-*/

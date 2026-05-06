@@ -9,6 +9,7 @@ export default function RootLayout() {
     <ThemeProvider value={resolvedScheme === "dark" ? DarkTheme : DefaultTheme}>
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="dark-mode" options={{ headerShown: false }} />
       </Stack>
     </ThemeProvider>
   );

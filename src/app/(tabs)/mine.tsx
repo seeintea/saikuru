@@ -1,9 +1,5 @@
-import { View, Text } from "react-native";
+import { TabsMine } from "@/features/tabs-mine";
 
 export default function MineScreen() {
-  return (
-    <View>
-      <Text className="text-amber-400"> mine index </Text>
-    </View>
-  );
+  return <TabsMine />;
 }

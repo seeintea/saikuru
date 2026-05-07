@@ -1,3 +1,5 @@
+import { FONTS } from "@/hooks/use-fonts";
+import { useTheme } from "@/hooks/use-theme";
 import { useRouter } from "expo-router";
 import { ChevronLeft } from "lucide-react-native";
 import { Pressable, Text, View } from "react-native";
@@ -8,18 +10,20 @@ interface HeaderProps {
 
 export function Header({ title }: HeaderProps) {
   const router = useRouter();
+  const { color } = useTheme();
 
   return (
-    <View className="flex-row items-center justify-between px-4 h-12">
+    <View className="items-center justify-center px-4 h-12">
       <Pressable
         onPress={() => router.back()}
         hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-        className="p-2 -ml-2 z-50"
+        className="absolute left-2 h-full items-center justify-center"
       >
-        <ChevronLeft size={24} />
+        <ChevronLeft size={22} color={color.foreground} />
       </Pressable>
-      <Text className="absolute left-0 right-0 text-center text-base font-bold">{title}</Text>
-      <View className="w-6" />
+      <Text className="text-foreground text-xl font-bold" style={{ fontFamily: FONTS.alibabaPuHui }}>
+        {title}
+      </Text>
     </View>
   );
 }

@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useSyncExternalStore } from "react";
-import { useColorScheme } from "react-native";
+import { useEffect, useMemo, useSyncExternalStore } from "react";
+import { Appearance, useColorScheme } from "react-native";
 
 const STORAGE_KEY = "theme_mode";
 
@@ -40,8 +40,13 @@ export function useThemeMode() {
   const mode = useSyncExternalStore(subscribe, getSnapshot);
   const systemScheme = useColorScheme();
 
-  const resolvedScheme: "light" | "dark" =
-    mode === "system" ? (systemScheme === "dark" ? "dark" : "light") : mode;
+  const resolvedScheme: "light" | "dark" = useMemo(() => {
+    return mode === "system" ? (systemScheme === "dark" ? "dark" : "light") : mode;
+  }, [mode, systemScheme]);
+
+  useEffect(() => {
+    Appearance.setColorScheme(resolvedScheme);
+  }, [resolvedScheme]);
 
   return { mode, resolvedScheme, setThemeMode };
 }

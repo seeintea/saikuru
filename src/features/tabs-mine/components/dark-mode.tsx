@@ -1,4 +1,4 @@
-import { useThemeMode } from "@/hooks/useThemeMode";
+import { useThemeMode } from "@/hooks/use-theme-mode";
 import { useRouter } from "expo-router";
 import { ChevronRight } from "lucide-react-native";
 import { Pressable, Text, View } from "react-native";

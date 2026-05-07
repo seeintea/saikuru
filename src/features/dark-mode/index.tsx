@@ -1,8 +1,8 @@
 import { Switch } from "@/components/switch";
-import { useThemeMode } from "@/hooks/useThemeMode";
+import { useThemeMode } from "@/hooks/use-theme-mode";
 import { Check } from "lucide-react-native";
 import { useCallback } from "react";
-import { View, Text, Pressable } from "react-native";
+import { Pressable, Text, View } from "react-native";
 import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
 
 export function DarkMode() {

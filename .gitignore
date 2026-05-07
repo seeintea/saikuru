@@ -42,5 +42,6 @@ app-example
 /ios
 /android
 
-# externally installed skills (rebuild via skills-lock.json)
+# ai reference
 .claude/skills/vercel-*/
+.claude/settings.local.json

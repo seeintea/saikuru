@@ -1,16 +1,17 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from "@react-navigation/native";
-import { Stack } from "expo-router";
-import { useThemeMode } from "@/hooks/useThemeMode";
 import "@/global.css";
+import { useTheme } from "@/hooks/use-theme";
+import { Stack } from "expo-router";
+import { VariableContextProvider } from "nativewind";
 
 export default function RootLayout() {
-  const { resolvedScheme } = useThemeMode();
+  const { themeVariables } = useTheme();
+
   return (
-    <ThemeProvider value={resolvedScheme === "dark" ? DarkTheme : DefaultTheme}>
+    <VariableContextProvider value={themeVariables}>
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="dark-mode" options={{ headerShown: false }} />
       </Stack>
-    </ThemeProvider>
+    </VariableContextProvider>
   );
 }

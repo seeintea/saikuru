@@ -1,5 +1,5 @@
+import { useTheme } from "@/hooks/use-theme";
 import type { BottomTabBarProps } from "@react-navigation/bottom-tabs";
-import { useTheme } from "@/hooks/useTheme";
 import { Tabs } from "expo-router";
 import { ListMinus, type LucideIcon, Target, User } from "lucide-react-native";
 import { useEffect, useRef, useState } from "react";
@@ -131,9 +131,9 @@ interface TabBarButtonProps {
 }
 
 function TabBarButton({ label, icon: Icon, isActive, onPress }: TabBarButtonProps) {
-  const color = useTheme();
+  const { color } = useTheme();
 
-  const activeCtxColor = isActive ? color.background : color.backgroundElement;
+  const activeCtxColor = isActive ? color.background : color.secondary;
 
   return (
     <TouchableOpacity

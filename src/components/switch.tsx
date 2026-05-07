@@ -1,11 +1,11 @@
 import * as SwitchPrimitive from "@rn-primitives/switch";
+import { Pressable } from "react-native";
 import Animated, {
   interpolateColor,
   useAnimatedStyle,
   useDerivedValue,
   withSpring,
 } from "react-native-reanimated";
-import { Pressable } from "react-native";
 
 interface SwitchProps {
   checked: boolean;

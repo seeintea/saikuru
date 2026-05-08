@@ -94,9 +94,9 @@ function CustomTabBar({ state, navigation }: BottomTabBarProps) {
 
   return (
     <View className={"absolute bottom-0 left-0 right-0 items-center mb-2"}>
-      <View className={"rounded-full flex-row items-center justify-center py-1 px-1 bg-card/95"}>
+      <View className={"rounded-full flex-row items-center justify-center py-1 px-1 bg-surface-lightest"}>
         <Animated.View
-          className={"absolute top-1 left-0 rounded-full bg-primary/15"}
+          className={"absolute top-1 left-0 rounded-full bg-surface-light"}
           style={indicatorStyle}
         />
         {tabs.map((tab, index) => {
@@ -133,7 +133,7 @@ interface TabBarButtonProps {
 function TabBarButton({ label, icon: Icon, isActive, onPress }: TabBarButtonProps) {
   const { color } = useTheme();
 
-  const activeCtxColor = isActive ? color.background : color.secondary;
+  const activeCtxColor = isActive ? color.textPrimary : color.textTertiary;
 
   return (
     <TouchableOpacity

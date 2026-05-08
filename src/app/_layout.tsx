@@ -12,7 +12,7 @@ export default function RootLayout() {
 
   return (
     <VariableContextProvider value={themeVariables}>
-      <View className={"flex-1 bg-background"}>
+      <View className={"flex-1 bg-surface-lighter"}>
         <SafeAreaView style={{ flex: 1 }}>
           <Stack>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />

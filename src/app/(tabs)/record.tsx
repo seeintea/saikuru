@@ -1,9 +1,10 @@
-import { Text, View } from "react-native";
+import { BackgroundView } from "@/components/background-view";
+import { Text } from "react-native";
 
 export default function RecordScreen() {
   return (
-    <View>
+    <BackgroundView>
       <Text className="text-amber-400"> record index </Text>
-    </View>
+    </BackgroundView>
   );
 }

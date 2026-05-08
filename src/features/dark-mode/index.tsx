@@ -19,29 +19,29 @@ export function DarkMode() {
 
   return (
     <View className={"flex-1"}>
-      <View className="flex-row items-center justify-between bg-secondary px-4 py-3 border-t border-b border-border">
+      <View className="flex-row items-center justify-between bg-surface-lightest px-4 py-3 border-t border-b border-border">
         <View>
-          <Text className={"text-foreground text-lg"}>跟随系统</Text>
-          <Text className={"text-secondary-foreground text-sm"}>开启后将跟随系统打开或关闭深色模式</Text>
+          <Text className={"text-text-primary text-lg"}>跟随系统</Text>
+          <Text className={"text-text-secondary text-sm"}>开启后将跟随系统打开或关闭深色模式</Text>
         </View>
         <Switch checked={mode === "system"} onCheckedChange={handleToggle} />
       </View>
       {mode !== "system" && (
         <Animated.View entering={FadeIn} exiting={FadeOut}>
-          <Text className={"text-foreground p-4"}>手动选择</Text>
+          <Text className={"text-text-primary p-4"}>手动选择</Text>
           <Pressable
-            className="flex-row items-center justify-between bg-secondary p-4 border-t border-b border-border"
+            className="flex-row items-center justify-between bg-surface-lightest p-4 border-t border-b border-border"
             onPress={() => setThemeMode("light")}
           >
-            <Text className={"text-foreground"}>普通模式</Text>
-            {mode === "light" && <Check size={18} color={color.primary} />}
+            <Text className={"text-text-primary"}>普通模式</Text>
+            {mode === "light" && <Check size={18} color={color.textTertiary} />}
           </Pressable>
           <Pressable
-            className="flex-row items-center justify-between bg-secondary p-4 border-b border-border"
+            className="flex-row items-center justify-between bg-surface-lightest p-4 border-b border-border"
             onPress={() => setThemeMode("dark")}
           >
-            <Text className={"text-foreground"}>深色模式</Text>
-            {mode === "dark" && <Check size={18} color={color.primary} />}
+            <Text className={"text-text-primary"}>深色模式</Text>
+            {mode === "dark" && <Check size={18} color={color.textTertiary} />}
           </Pressable>
         </Animated.View>
       )}

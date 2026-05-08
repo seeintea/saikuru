@@ -1,9 +1,10 @@
-import { Text, View } from "react-native";
+import { BackgroundView } from "@/components/background-view";
+import { Text } from "react-native";
 
 export default function HomeScreen() {
   return (
-    <View>
+    <BackgroundView>
       <Text className="text-background"> tab index </Text>
-    </View>
+    </BackgroundView>
   );
 }

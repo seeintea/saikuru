@@ -1,3 +1,4 @@
+import { useTheme } from "@/hooks/use-theme";
 import * as SwitchPrimitive from "@rn-primitives/switch";
 import { Pressable } from "react-native";
 import Animated, {
@@ -20,9 +21,10 @@ const THUMB_PADDING = 2;
 
 export function Switch({ checked, onCheckedChange, disabled }: SwitchProps) {
   const progress = useDerivedValue(() => (checked ? 1 : 0), [checked]);
+  const { color } = useTheme();
 
   const trackStyle = useAnimatedStyle(() => ({
-    backgroundColor: interpolateColor(progress.value, [0, 1], ["#E9E9EA", "#34C759"]),
+    backgroundColor: interpolateColor(progress.value, [0, 1], [color.surfaceDark, color.primaryDark]),
   }));
 
   const thumbStyle = useAnimatedStyle(() => ({
@@ -44,7 +46,8 @@ export function Switch({ checked, onCheckedChange, disabled }: SwitchProps) {
           style={[{ width: TRACK_WIDTH, height: TRACK_HEIGHT }, trackStyle]}
         >
           <Animated.View
-            className="absolute rounded-full bg-white shadow"
+            // human visual error / use light color for dark mode
+            className="absolute rounded-full bg-surface-lightest dark:bg-text-primary shadow"
             style={[
               {
                 width: THUMB_SIZE,

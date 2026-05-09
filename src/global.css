@@ -5,14 +5,18 @@
 @import "nativewind/theme";
 
 @theme {
-  /* 主色调 */
-  --color-primary-light: var(--primary-light);
-  --color-primary: var(--primary);
+  /* --- 固定不变的颜色 --- */
+  --color-primary-light: #d4ff33;
+  --color-primary: #c6fd00;
+  --color-success: #22c55e;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  --color-info: #3b82f6;
+
   --color-primary-dark: var(--primary-dark);
   --color-primary-bg: var(--primary-bg);
   --color-primary-text: var(--primary-text);
 
-  /* 表面色 */
   --color-surface-lightest: var(--surface-lightest);
   --color-surface-lighter: var(--surface-lighter);
   --color-surface-light: var(--surface-light);
@@ -20,20 +24,12 @@
   --color-surface-dark: var(--surface-dark);
   --color-surface-darkest: var(--surface-darkest);
 
-  /* 文字色 */
   --color-text-primary: var(--text-primary);
   --color-text-secondary: var(--text-secondary);
   --color-text-tertiary: var(--text-tertiary);
   --color-text-disabled: var(--text-disabled);
   --color-text-inverse: var(--text-inverse);
 
-  /* 功能色 */
-  --color-success: var(--success);
-  --color-warning: var(--warning);
-  --color-error: var(--error);
-  --color-info: var(--info);
-
-  /* 特殊 */
   --color-overlay: var(--overlay);
   --color-shadow: var(--shadow);
   --color-border: var(--border);

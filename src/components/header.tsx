@@ -19,9 +19,9 @@ export function Header({ title }: HeaderProps) {
         hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
         className="absolute left-2 h-full items-center justify-center"
       >
-        <ChevronLeft size={22} color={color.textPrimary} />
+        <ChevronLeft size={20} color={color.textPrimary} />
       </Pressable>
-      <Text className="text-text-primary text-xl font-bold" style={{ fontFamily: FONTS.alibabaPuHui }}>
+      <Text className="text-text-primary text-lg font-bold" style={{ fontFamily: FONTS.alibabaPuHui }}>
         {title}
       </Text>
     </View>

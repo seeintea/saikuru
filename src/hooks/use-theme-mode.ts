@@ -45,8 +45,8 @@ export function useThemeMode() {
   }, [mode, systemScheme]);
 
   useEffect(() => {
-    Appearance.setColorScheme(resolvedScheme);
-  }, [resolvedScheme]);
+    Appearance.setColorScheme(mode === "system" ? "unspecified" : mode);
+  }, [mode]);
 
   return { mode, resolvedScheme, setThemeMode };
 }

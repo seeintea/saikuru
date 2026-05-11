@@ -50,7 +50,6 @@ function CustomTabBar({ state, navigation }: BottomTabBarProps) {
           isFirstLoad.value = false;
         }, 0);
       }
-      console.log(newRect);
       return newRect;
     });
   };
@@ -80,7 +79,7 @@ function CustomTabBar({ state, navigation }: BottomTabBarProps) {
       };
     }
 
-    const springConf = { damping: 40, stiffness: 500 };
+    const springConf = { damping: 55, stiffness: 500 };
     const translateX = withSpring(t, springConf);
     const width = withSpring(w, springConf);
     const height = withSpring(h, springConf);
@@ -116,12 +115,12 @@ function CustomTabBar({ state, navigation }: BottomTabBarProps) {
         </View>
         <Pressable
           className={
-            "rounded-full w-11 items-center justify-center bg-surface-lightest my-0.5 active:bg-surface-light"
+            "rounded-full w-15.5 items-center justify-center bg-surface-lightest my-0.5 active:bg-surface-light"
           }
           onPress={() => navigation.navigate("create")}
         >
           {({ pressed }) => (
-            <Plus size={24} strokeWidth={1.5} color={pressed ? color.textPrimary : color.textTertiary} />
+            <Plus size={32} strokeWidth={1.5} color={pressed ? color.textPrimary : color.textTertiary} />
           )}
         </Pressable>
       </View>
@@ -146,10 +145,10 @@ function TabBarButton({ label, icon: Icon, isActive, onPress }: TabButtonProps) 
     <TouchableOpacity
       onPress={onPress}
       activeOpacity={0.75}
-      className={"items-center gap-[1.5px] z-10 px-4.5 py-2"}
+      className={"items-center gap-[1.5px] z-10 px-9 py-3"}
     >
-      <Icon size={14} color={activeCtxColor} strokeWidth={2.5} />
-      <Text className={"text-[8px]"} style={[{ color: activeCtxColor, fontWeight: activeCtxWeight }]}>
+      <Icon size={20} color={activeCtxColor} strokeWidth={2.5} />
+      <Text className={"text-[10px]"} style={[{ color: activeCtxColor, fontWeight: activeCtxWeight }]}>
         {label}
       </Text>
     </TouchableOpacity>

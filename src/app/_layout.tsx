@@ -17,6 +17,7 @@ export default function RootLayout() {
           <Stack>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             <Stack.Screen name="dark-mode" options={{ headerShown: false }} />
+            <Stack.Screen name="create" options={{ headerShown: false }} />
           </Stack>
         </SafeAreaView>
       </View>

@@ -14,7 +14,12 @@ export default function RootLayout() {
     <VariableContextProvider value={themeVariables}>
       <View className={"flex-1 bg-surface-lighter"}>
         <SafeAreaView style={{ flex: 1 }}>
-          <Stack>
+          <Stack
+            screenOptions={{
+              animation: "slide_from_right",
+              contentStyle: { backgroundColor: "transparent" },
+            }}
+          >
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             <Stack.Screen name="dark-mode" options={{ headerShown: false }} />
             <Stack.Screen name="create" options={{ headerShown: false }} />

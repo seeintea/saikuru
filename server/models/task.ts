@@ -2,16 +2,21 @@
  * Task 模型类型
  */
 
+export type CycleType = "days" | "weeks" | "months";
+export type TargetLogic = "and" | "or";
+
 export interface Task {
   id: string;
   name: string;
   description: string | null;
   icon: string | null;
-  cycleType: "days" | "weeks" | "months";
+  color: string | null;
+  cycleType: CycleType;
   cycleLength: number;
-  countTarget: number | null;
-  timeTarget: number | null;
-  targetLogic: "and" | "or";
+  cycleStartDate: string;
+  isInfinite: boolean;
+  taskEndDate: string | null;
+  targetLogic: TargetLogic;
   isActive: boolean;
   createdAt: string;
   updatedAt: string;

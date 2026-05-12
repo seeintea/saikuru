@@ -1,10 +1,11 @@
 /**
  * Task 数据持久层（Store）
- * 所有 Task 表的数据库操作封装在这里
  */
 
 import { getDatabase } from "@server/db/connection";
 import type { Task, CreateTaskInput, UpdateTaskInput } from "@server/models";
+import type { CreateTaskTargetInput } from "@server/models/task-target";
+import type { CreateTaskGoalInput } from "@server/models/task-goal";
 
 export async function getAllTasks(): Promise<Task[]> {
   const db = await getDatabase();
@@ -14,10 +15,12 @@ export async function getAllTasks(): Promise<Task[]> {
       name,
       description,
       icon,
+      color,
       cycle_type AS cycleType,
       cycle_length AS cycleLength,
-      count_target AS countTarget,
-      time_target AS timeTarget,
+      cycle_start_date AS cycleStartDate,
+      is_infinite AS isInfinite,
+      task_end_date AS taskEndDate,
       target_logic AS targetLogic,
       is_active AS isActive,
       created_at AS createdAt,
@@ -28,6 +31,7 @@ export async function getAllTasks(): Promise<Task[]> {
   );
   return rows.map((r) => ({
     ...r,
+    isInfinite: Boolean(r.isInfinite),
     isActive: Boolean(r.isActive),
   }));
 }
@@ -40,10 +44,12 @@ export async function getTaskById(id: string): Promise<Task | null> {
       name,
       description,
       icon,
+      color,
       cycle_type AS cycleType,
       cycle_length AS cycleLength,
-      count_target AS countTarget,
-      time_target AS timeTarget,
+      cycle_start_date AS cycleStartDate,
+      is_infinite AS isInfinite,
+      task_end_date AS taskEndDate,
       target_logic AS targetLogic,
       is_active AS isActive,
       created_at AS createdAt,
@@ -52,47 +58,85 @@ export async function getTaskById(id: string): Promise<Task | null> {
     WHERE id = ?`,
     id
   );
-  return row ? { ...row, isActive: Boolean(row.isActive) } : null;
+  return row
+    ? {
+        ...row,
+        isInfinite: Boolean(row.isInfinite),
+        isActive: Boolean(row.isActive),
+      }
+    : null;
 }
 
-export async function createTask(input: CreateTaskInput): Promise<Task> {
+export async function createTask(
+  input: CreateTaskInput,
+  targets?: CreateTaskTargetInput[],
+  goals?: CreateTaskGoalInput[]
+): Promise<Task> {
   const db = await getDatabase();
   const id = crypto.randomUUID();
   const now = new Date().toISOString();
 
-  await db.runAsync(
-    `INSERT INTO tasks
-      (id, name, description, icon, cycle_type, cycle_length,
-       count_target, time_target, target_logic, is_active, created_at, updated_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-    id,
-    input.name,
-    input.description ?? null,
-    input.icon ?? null,
-    input.cycleType,
-    input.cycleLength,
-    input.countTarget ?? null,
-    input.timeTarget ?? null,
-    input.targetLogic,
-    input.isActive ? 1 : 0,
-    now,
-    now
-  );
+  await db.withTransactionAsync(async () => {
+    await db.runAsync(
+      `INSERT INTO tasks
+        (id, name, description, icon, color, cycle_type, cycle_length,
+         cycle_start_date, is_infinite, task_end_date, target_logic, is_active, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      id,
+      input.name,
+      input.description ?? null,
+      input.icon ?? null,
+      input.color ?? null,
+      input.cycleType,
+      input.cycleLength,
+      input.cycleStartDate,
+      input.isInfinite ? 1 : 0,
+      input.taskEndDate ?? null,
+      input.targetLogic,
+      input.isActive ? 1 : 0,
+      now,
+      now
+    );
 
-  return {
-    id,
-    name: input.name,
-    description: input.description ?? null,
-    icon: input.icon ?? null,
-    cycleType: input.cycleType,
-    cycleLength: input.cycleLength,
-    countTarget: input.countTarget ?? null,
-    timeTarget: input.timeTarget ?? null,
-    targetLogic: input.targetLogic,
-    isActive: input.isActive,
-    createdAt: now,
-    updatedAt: now,
-  };
+    if (targets?.length) {
+      for (const t of targets) {
+        await db.runAsync(
+          `INSERT INTO task_targets
+            (id, task_id, target_type, target_value, operator, created_at, updated_at)
+           VALUES (?, ?, ?, ?, ?, ?, ?)`,
+          crypto.randomUUID(),
+          id,
+          t.targetType,
+          t.targetValue,
+          t.operator,
+          now,
+          now
+        );
+      }
+    }
+
+    if (goals?.length) {
+      for (const g of goals) {
+        await db.runAsync(
+          `INSERT INTO task_goals
+            (id, task_id, goal_type, target_value, current_value, status, created_at, updated_at)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+          crypto.randomUUID(),
+          id,
+          g.goalType,
+          g.targetValue,
+          0,
+          "active",
+          now,
+          now
+        );
+      }
+    }
+  });
+
+  const task = await getTaskById(id);
+  if (!task) throw new Error("Failed to create task");
+  return task;
 }
 
 export async function updateTask(id: string, input: UpdateTaskInput): Promise<void> {
@@ -114,6 +158,10 @@ export async function updateTask(id: string, input: UpdateTaskInput): Promise<vo
     fields.push("icon = ?");
     values.push(input.icon);
   }
+  if (input.color !== undefined) {
+    fields.push("color = ?");
+    values.push(input.color);
+  }
   if (input.cycleType !== undefined) {
     fields.push("cycle_type = ?");
     values.push(input.cycleType);
@@ -122,13 +170,17 @@ export async function updateTask(id: string, input: UpdateTaskInput): Promise<vo
     fields.push("cycle_length = ?");
     values.push(input.cycleLength);
   }
-  if (input.countTarget !== undefined) {
-    fields.push("count_target = ?");
-    values.push(input.countTarget);
+  if (input.cycleStartDate !== undefined) {
+    fields.push("cycle_start_date = ?");
+    values.push(input.cycleStartDate);
   }
-  if (input.timeTarget !== undefined) {
-    fields.push("time_target = ?");
-    values.push(input.timeTarget);
+  if (input.isInfinite !== undefined) {
+    fields.push("is_infinite = ?");
+    values.push(input.isInfinite ? 1 : 0);
+  }
+  if (input.taskEndDate !== undefined) {
+    fields.push("task_end_date = ?");
+    values.push(input.taskEndDate);
   }
   if (input.targetLogic !== undefined) {
     fields.push("target_logic = ?");

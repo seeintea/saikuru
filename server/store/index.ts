@@ -3,4 +3,6 @@
  */
 
 export * from "./task";
+export * from "./task-target";
+export * from "./task-goal";
 export * from "./record";

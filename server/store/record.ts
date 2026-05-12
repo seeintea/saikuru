@@ -1,12 +1,15 @@
 /**
  * DailyRecord 数据持久层（Store）
- * 所有 daily_records 表的数据库操作封装在这里
  */
 
 import { getDatabase } from "@server/db/connection";
-import type { DailyRecord, CreateRecordInput } from "@server/models";
+import type { DailyRecord, CreateRecordInput, UpdateRecordInput } from "@server/models";
+import { recomputeGoalProgress } from "./task-goal";
 
-export async function getRecordsByTaskAndDate(taskId: string, date: string): Promise<DailyRecord[]> {
+export async function getRecordsByTaskAndDate(
+  taskId: string,
+  date: string
+): Promise<DailyRecord[]> {
   const db = await getDatabase();
   return db.getAllAsync<DailyRecord>(
     `SELECT
@@ -26,7 +29,7 @@ export async function getRecordsByTaskAndDate(taskId: string, date: string): Pro
   );
 }
 
-export async function getRecordsByDateRange(
+export async function getRecordsByTaskAndDateRange(
   taskId: string,
   startDate: string,
   endDate: string
@@ -43,12 +46,44 @@ export async function getRecordsByDateRange(
       created_at AS createdAt,
       updated_at AS updatedAt
     FROM daily_records
-    WHERE task_id = ? AND date BETWEEN ? AND ?
-    ORDER BY date DESC`,
+    WHERE task_id = ? AND date >= ? AND date < ?
+    ORDER BY date ASC`,
     taskId,
     startDate,
     endDate
   );
+}
+
+export async function getRecordsByTask(
+  taskId: string,
+  limit?: number,
+  offset?: number
+): Promise<DailyRecord[]> {
+  const db = await getDatabase();
+  let sql = `SELECT
+      id,
+      task_id AS taskId,
+      date,
+      count,
+      duration,
+      notes,
+      created_at AS createdAt,
+      updated_at AS updatedAt
+    FROM daily_records
+    WHERE task_id = ?
+    ORDER BY date DESC`;
+  const params: (string | number)[] = [taskId];
+
+  if (limit !== undefined) {
+    sql += " LIMIT ?";
+    params.push(limit);
+  }
+  if (offset !== undefined) {
+    sql += " OFFSET ?";
+    params.push(offset);
+  }
+
+  return db.getAllAsync<DailyRecord>(sql, ...params);
 }
 
 export async function createRecord(input: CreateRecordInput): Promise<DailyRecord> {
@@ -70,22 +105,27 @@ export async function createRecord(input: CreateRecordInput): Promise<DailyRecor
     now
   );
 
-  return {
-    id,
-    taskId: input.taskId,
-    date: input.date,
-    count: input.count,
-    duration: input.duration,
-    notes: input.notes ?? null,
-    createdAt: now,
-    updatedAt: now,
-  };
+  await recomputeGoalProgress(input.taskId);
+
+  const record = await db.getFirstAsync<DailyRecord>(
+    `SELECT
+      id,
+      task_id AS taskId,
+      date,
+      count,
+      duration,
+      notes,
+      created_at AS createdAt,
+      updated_at AS updatedAt
+    FROM daily_records
+    WHERE id = ?`,
+    id
+  );
+  if (!record) throw new Error("Failed to create daily record");
+  return record;
 }
 
-export async function updateRecord(
-  id: string,
-  input: Partial<Pick<DailyRecord, "count" | "duration" | "notes">>
-): Promise<void> {
+export async function updateRecord(id: string, input: UpdateRecordInput): Promise<void> {
   const db = await getDatabase();
   const now = new Date().toISOString();
 
@@ -111,10 +151,29 @@ export async function updateRecord(
   values.push(now);
   values.push(id);
 
+  const taskId = await db.getFirstAsync<{ taskId: string }>(
+    `SELECT task_id AS taskId FROM daily_records WHERE id = ?`,
+    id
+  );
+
   await db.runAsync(`UPDATE daily_records SET ${fields.join(", ")} WHERE id = ?`, ...values);
+
+  if (taskId) {
+    await recomputeGoalProgress(taskId.taskId);
+  }
 }
 
 export async function deleteRecord(id: string): Promise<void> {
   const db = await getDatabase();
+
+  const taskId = await db.getFirstAsync<{ taskId: string }>(
+    `SELECT task_id AS taskId FROM daily_records WHERE id = ?`,
+    id
+  );
+
   await db.runAsync("DELETE FROM daily_records WHERE id = ?", id);
+
+  if (taskId) {
+    await recomputeGoalProgress(taskId.taskId);
+  }
 }

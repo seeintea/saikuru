@@ -14,3 +14,6 @@ export interface DailyRecord {
 }
 
 export type CreateRecordInput = Omit<DailyRecord, "id" | "createdAt" | "updatedAt">;
+export type UpdateRecordInput = Partial<
+  Omit<DailyRecord, "id" | "taskId" | "date" | "createdAt" | "updatedAt">
+>;

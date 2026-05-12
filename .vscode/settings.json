@@ -1,5 +1,5 @@
 {
-  "cSpell.ignoreWords": ["nativewind", "Pressable"],
+  "cSpell.ignoreWords": ["nativewind", "Pressable", "saikuru"],
   "editor.codeActionsOnSave": {
     "source.fixAll": "explicit",
     "source.organizeImports": "explicit",

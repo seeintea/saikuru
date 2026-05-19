@@ -21,7 +21,7 @@ export function Header({ title }: HeaderProps) {
       >
         <ChevronLeft size={20} color={color.textPrimary} />
       </Pressable>
-      <Text className="text-text-primary text-lg font-bold" style={{ fontFamily: FONTS.alibabaPuHui }}>
+      <Text className="text-text-primary text-lg font-semibold" style={{ fontFamily: FONTS.alibabaPuHui }}>
         {title}
       </Text>
     </View>

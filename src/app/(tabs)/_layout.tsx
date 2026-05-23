@@ -1,8 +1,7 @@
 import { useTheme } from "@/hooks/use-theme";
-import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { Tabs } from "expo-router";
 import { type LucideIcon, Plus, SquareLibrary, Target, UserRound } from "lucide-react-native";
-import { useState } from "react";
+import { type ComponentProps, useState } from "react";
 import { LayoutChangeEvent, Pressable, Text, TouchableOpacity, View } from "react-native";
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from "react-native-reanimated";
 
@@ -11,6 +10,8 @@ const tabs = [
   { key: "record", label: "记录", icon: SquareLibrary },
   { key: "mine", label: "我的", icon: UserRound },
 ];
+
+type TabBarProps = Parameters<Exclude<ComponentProps<typeof Tabs>["tabBar"], undefined>>[0];
 
 export default function TabLayout() {
   return (
@@ -28,7 +29,7 @@ interface TabRect {
   height: number;
 }
 
-function CustomTabBar({ state, navigation }: BottomTabBarProps) {
+function CustomTabBar({ state, navigation }: TabBarProps) {
   const { color } = useTheme();
   const [tabRect, setTabRect] = useState<TabRect[]>([]);
   const activeIndex = useSharedValue(state.index);

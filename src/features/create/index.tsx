@@ -1,31 +1,63 @@
-import { Switch } from "@/components/switch";
-import { Controller, useForm } from "react-hook-form";
-import { Button, ScrollView, Text, TextInput, View } from "react-native";
+import { DateField } from "@/components/date-field";
+import { Segmented } from "@/components/segmented";
+import { Controller, useForm, useWatch } from "react-hook-form";
+import { Button, ScrollView, TextInput, View } from "react-native";
 import { Heading } from "./components/heading";
-import { CreateFormItem } from "./data";
+import type { CreateFormItem } from "./data";
+
+function getTodayString() {
+  const today = new Date();
+  return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(
+    today.getDate()
+  ).padStart(2, "0")}`;
+}
+
+function getCycleLengthOptions(cycleType: CreateFormItem["cycleType"]) {
+  if (cycleType === "weeks") {
+    return [
+      { label: "每周", value: "1" },
+      { label: "每 2 周", value: "2" },
+      { label: "每 3 周", value: "3" },
+    ];
+  }
+
+  if (cycleType === "months") {
+    return [
+      { label: "每月", value: "1" },
+      { label: "每 2 月", value: "2" },
+      { label: "每 3 月", value: "3" },
+    ];
+  }
+
+  return [
+    { label: "每天", value: "1" },
+    { label: "每 2 天", value: "2" },
+    { label: "每 3 天", value: "3" },
+  ];
+}
 
 export function Create() {
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<CreateFormItem>({
+  const { control, handleSubmit, setValue } = useForm<CreateFormItem>({
     defaultValues: {
       name: "",
       description: "",
       cycleType: "days",
-      cycleLength: 0,
-      cycleStartDate: "",
-      isInfinite: 0,
+      cycleLength: 1,
+      cycleStartDate: getTodayString(),
+      isInfinite: true,
+      taskEndDate: undefined,
       targetLogic: "and",
+      targets: [{ targetType: "frequency", targetValue: 1, operator: "gte" }],
     },
   });
 
+  const cycleType = useWatch({ control, name: "cycleType" });
+  const isInfinite = useWatch({ control, name: "isInfinite" });
   const onSubmit = (data: CreateFormItem) => console.log(data);
 
   return (
     <ScrollView
-      className={"flex-1 py-2 px-4"}
+      className="flex-1 px-4 py-2"
       showsVerticalScrollIndicator={false}
       keyboardShouldPersistTaps="handled"
     >
@@ -51,20 +83,32 @@ export function Create() {
         name="description"
       />
 
-      {/* TODO: select component  cycleType */}
+      <Heading title="周期" />
+      <Controller
+        control={control}
+        rules={{ required: true }}
+        render={({ field: { onChange, value } }) => (
+          <Segmented
+            value={value}
+            onValueChange={onChange}
+            options={[
+              { label: "天", value: "days" },
+              { label: "周", value: "weeks" },
+              { label: "月", value: "months" },
+            ]}
+          />
+        )}
+        name="cycleType"
+      />
 
       <Controller
         control={control}
-        rules={{
-          required: true,
-        }}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            keyboardType="number-pad"
-            placeholder="请输入周期长度"
-            onBlur={onBlur}
-            onChangeText={onChange}
+        rules={{ required: true }}
+        render={({ field: { onChange, value } }) => (
+          <Segmented
             value={`${value}`}
+            onValueChange={(nextValue) => onChange(Number(nextValue))}
+            options={getCycleLengthOptions(cycleType)}
           />
         )}
         name="cycleLength"
@@ -72,57 +116,78 @@ export function Create() {
 
       <Controller
         control={control}
-        rules={{
-          required: true,
-        }}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            keyboardType="number-pad"
-            placeholder="请输入周期开始时间"
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={`${value}`}
-          />
+        rules={{ required: true }}
+        render={({ field: { onChange, value } }) => (
+          <DateField label="开始日期" value={value} onChange={onChange} />
         )}
         name="cycleStartDate"
       />
 
-      <View className={"flex-row items-center"}>
-        <Text>是否无限循环</Text>
-        <Controller
-          control={control}
-          rules={{
-            required: true,
-          }}
-          render={({ field: { onChange, value } }) => (
-            <Switch onCheckedChange={onChange} checked={value === 1} />
-          )}
-          name="isInfinite"
-        />
-      </View>
-
+      <Heading title="结束条件" />
       <Controller
         control={control}
-        rules={{
-          required: true,
-        }}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            keyboardType="number-pad"
-            placeholder="请输入周期结束时间"
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={`${value}`}
+        rules={{ required: true }}
+        render={({ field: { onChange, value } }) => (
+          <Segmented
+            value={value ? "infinite" : "date"}
+            onValueChange={(nextValue) => {
+              const nextIsInfinite = nextValue === "infinite";
+              onChange(nextIsInfinite);
+              setValue("taskEndDate", nextIsInfinite ? undefined : getTodayString());
+            }}
+            options={[
+              { label: "长期坚持", value: "infinite" },
+              { label: "到指定日期", value: "date" },
+            ]}
           />
         )}
-        name="taskEndDate"
+        name="isInfinite"
       />
 
-      {/* TODO: select component  targetLogic */}
+      {!isInfinite ? (
+        <Controller
+          control={control}
+          rules={{ required: true }}
+          render={({ field: { onChange, value } }) => (
+            <DateField label="结束日期" value={value ?? getTodayString()} onChange={onChange} />
+          )}
+          name="taskEndDate"
+        />
+      ) : null}
 
-      {/* targets  items */}
+      <Heading title="目标" />
+      <Controller
+        control={control}
+        rules={{ required: true }}
+        render={({ field: { onChange, value } }) => (
+          <Segmented
+            value={value}
+            onValueChange={onChange}
+            options={[
+              { label: "全部达成", value: "and" },
+              { label: "任一达成", value: "or" },
+            ]}
+          />
+        )}
+        name="targetLogic"
+      />
 
-      {/* TODO: select component  targetType */}
+      <Controller
+        control={control}
+        rules={{ required: true }}
+        render={({ field: { onChange, value } }) => (
+          <Segmented
+            value={value}
+            onValueChange={onChange}
+            options={[
+              { label: "次数", value: "frequency" },
+              { label: "数量", value: "count" },
+              { label: "时长", value: "duration" },
+            ]}
+          />
+        )}
+        name="targets.0.targetType"
+      />
 
       <Controller
         control={control}
@@ -132,18 +197,35 @@ export function Create() {
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
             keyboardType="number-pad"
-            placeholder="请输入周期长度"
+            placeholder="请输入目标值"
             onBlur={onBlur}
-            onChangeText={onChange}
+            onChangeText={(nextValue) => onChange(Number(nextValue))}
             value={`${value}`}
           />
         )}
         name="targets.0.targetValue"
       />
 
-      {/* TODO: select component  operator */}
+      <Controller
+        control={control}
+        rules={{ required: true }}
+        render={({ field: { onChange, value } }) => (
+          <Segmented
+            value={value}
+            onValueChange={onChange}
+            options={[
+              { label: "至少", value: "gte" },
+              { label: "最多", value: "lte" },
+              { label: "刚好", value: "eq" },
+            ]}
+          />
+        )}
+        name="targets.0.operator"
+      />
 
-      <Button title="提交" onPress={handleSubmit(onSubmit)} />
+      <View className="py-6">
+        <Button title="提交" onPress={handleSubmit(onSubmit)} />
+      </View>
     </ScrollView>
   );
 }

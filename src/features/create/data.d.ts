@@ -4,7 +4,7 @@ export interface CreateFormItem {
   cycleType: "days" | "weeks" | "months";
   cycleLength: number;
   cycleStartDate: string;
-  isInfinite: 0 | 1;
+  isInfinite: boolean;
   taskEndDate?: string;
   targetLogic: "and" | "or";
   targets: {

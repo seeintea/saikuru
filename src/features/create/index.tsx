@@ -1,7 +1,7 @@
 import { DateField } from "@/components/date-field";
 import { Segmented } from "@/components/segmented";
-import { Controller, useForm, useWatch } from "react-hook-form";
-import { Button, ScrollView, TextInput, View } from "react-native";
+import { Controller, useFieldArray, useForm, useWatch } from "react-hook-form";
+import { Button, Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import { Heading } from "./components/heading";
 import type { CreateFormItem } from "./data";
 
@@ -51,6 +51,7 @@ export function Create() {
     },
   });
 
+  const { fields, append, remove } = useFieldArray({ control, name: "targets" });
   const cycleType = useWatch({ control, name: "cycleType" });
   const isInfinite = useWatch({ control, name: "isInfinite" });
   const onSubmit = (data: CreateFormItem) => console.log(data);
@@ -172,56 +173,78 @@ export function Create() {
         name="targetLogic"
       />
 
-      <Controller
-        control={control}
-        rules={{ required: true }}
-        render={({ field: { onChange, value } }) => (
-          <Segmented
-            value={value}
-            onValueChange={onChange}
-            options={[
-              { label: "次数", value: "frequency" },
-              { label: "数量", value: "count" },
-              { label: "时长", value: "duration" },
-            ]}
-          />
-        )}
-        name="targets.0.targetType"
-      />
+      {fields.map((field, index) => (
+        <View key={field.id} className="gap-3 rounded-2xl bg-surface-lightest dark:bg-surface-light p-3">
+          <View className="flex-row items-center justify-between">
+            <Text className="text-base font-semibold text-text-primary dark:text-text-primary">
+              目标 {index + 1}
+            </Text>
+            {fields.length > 1 ? (
+              <Pressable className="rounded-full px-3 py-1 active:bg-surface-light" onPress={() => remove(index)}>
+                <Text className="text-sm font-medium text-error">删除</Text>
+              </Pressable>
+            ) : null}
+          </View>
 
-      <Controller
-        control={control}
-        rules={{
-          required: true,
-        }}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            keyboardType="number-pad"
-            placeholder="请输入目标值"
-            onBlur={onBlur}
-            onChangeText={(nextValue) => onChange(Number(nextValue))}
-            value={`${value}`}
+          <Controller
+            control={control}
+            rules={{ required: true }}
+            render={({ field: { onChange, value } }) => (
+              <Segmented
+                value={value}
+                onValueChange={onChange}
+                options={[
+                  { label: "次数", value: "frequency" },
+                  { label: "数量", value: "count" },
+                  { label: "时长", value: "duration" },
+                ]}
+              />
+            )}
+            name={`targets.${index}.targetType`}
           />
-        )}
-        name="targets.0.targetValue"
-      />
 
-      <Controller
-        control={control}
-        rules={{ required: true }}
-        render={({ field: { onChange, value } }) => (
-          <Segmented
-            value={value}
-            onValueChange={onChange}
-            options={[
-              { label: "至少", value: "gte" },
-              { label: "最多", value: "lte" },
-              { label: "刚好", value: "eq" },
-            ]}
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                keyboardType="number-pad"
+                placeholder="请输入目标值"
+                onBlur={onBlur}
+                onChangeText={(nextValue) => onChange(Number(nextValue))}
+                value={`${value}`}
+              />
+            )}
+            name={`targets.${index}.targetValue`}
           />
-        )}
-        name="targets.0.operator"
-      />
+
+          <Controller
+            control={control}
+            rules={{ required: true }}
+            render={({ field: { onChange, value } }) => (
+              <Segmented
+                value={value}
+                onValueChange={onChange}
+                options={[
+                  { label: "至少", value: "gte" },
+                  { label: "最多", value: "lte" },
+                  { label: "刚好", value: "eq" },
+                ]}
+              />
+            )}
+            name={`targets.${index}.operator`}
+          />
+        </View>
+      ))}
+
+      <Pressable
+        className="items-center rounded-2xl border border-dashed border-border px-4 py-3 active:bg-surface-light"
+        onPress={() => append({ targetType: "frequency", targetValue: 1, operator: "gte" })}
+      >
+        <Text className="text-base font-medium text-primary-dark dark:text-primary-dark">添加目标</Text>
+      </Pressable>
 
       <View className="py-6">
         <Button title="提交" onPress={handleSubmit(onSubmit)} />

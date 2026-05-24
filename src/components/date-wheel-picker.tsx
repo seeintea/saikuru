@@ -66,8 +66,8 @@ function WheelColumn({
             <Text
               className={`text-lg ${
                 selected
-                  ? "font-semibold text-text-primary dark:text-text-primary"
-                  : "text-text-secondary dark:text-text-secondary"
+                  ? "font-semibold text-text-primary"
+                  : "text-text-secondary"
               }`}
             >
               {item}
@@ -99,19 +99,19 @@ export function DateWheelPicker({ value, onCancel, onConfirm }: DateWheelPickerP
   const safeDay = Math.min(day, days.length);
 
   return (
-    <View className="bg-surface-lightest dark:bg-surface-light p-4">
+    <View className="bg-surface-lightest p-4">
       <View className="mb-3 flex-row items-center justify-between">
         <Pressable onPress={onCancel} className="px-2 py-1">
-          <Text className="text-base text-text-secondary dark:text-text-secondary">取消</Text>
+          <Text className="text-base text-text-secondary">取消</Text>
         </Pressable>
-        <Text className="text-base font-semibold text-text-primary dark:text-text-primary">选择日期</Text>
+        <Text className="text-base font-semibold text-text-primary">选择日期</Text>
         <Pressable onPress={() => onConfirm(formatDate(year, month, safeDay))} className="px-2 py-1">
-          <Text className="text-base font-semibold text-primary-light dark:text-primary-dark">确定</Text>
+          <Text className="text-base font-semibold text-primary">确定</Text>
         </Pressable>
       </View>
 
       <View
-        className="relative flex-row overflow-hidden rounded-2xl bg-surface-light dark:bg-surface-dark"
+        className="relative flex-row overflow-hidden rounded-2xl bg-surface-light"
         style={{ height: ITEM_HEIGHT * VISIBLE_ITEMS }}
       >
         <View

@@ -46,8 +46,7 @@ export function Switch({ checked, onCheckedChange, disabled }: SwitchProps) {
           style={[{ width: TRACK_WIDTH, height: TRACK_HEIGHT }, trackStyle]}
         >
           <Animated.View
-            // human visual error / use light color for dark mode
-            className="absolute rounded-full bg-surface-lightest dark:bg-text-primary shadow"
+            className="absolute rounded-full bg-surface-lightest shadow"
             style={[
               {
                 width: THUMB_SIZE,

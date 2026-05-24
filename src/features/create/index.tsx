@@ -1,8 +1,10 @@
+import { Button } from "@/components/button";
 import { DateField } from "@/components/date-field";
 import { Input } from "@/components/input";
+import { InputNumber } from "@/components/input-number";
 import { Segmented } from "@/components/segmented";
 import { Controller, useFieldArray, useForm, useWatch } from "react-hook-form";
-import { Button, Pressable, ScrollView, Text, View } from "react-native";
+import { Pressable, ScrollView, Text, View } from "react-native";
 import { Heading } from "./components/heading";
 import type { CreateFormItem } from "./data";
 
@@ -59,7 +61,8 @@ export function Create() {
 
   return (
     <ScrollView
-      className="flex-1 px-4 py-2"
+      className="flex-1"
+      contentContainerClassName="gap-4 px-4 py-2"
       showsVerticalScrollIndicator={false}
       keyboardShouldPersistTaps="handled"
     >
@@ -86,6 +89,7 @@ export function Create() {
       />
 
       <Heading title="周期" />
+
       <Controller
         control={control}
         rules={{ required: true }}
@@ -126,6 +130,7 @@ export function Create() {
       />
 
       <Heading title="结束条件" />
+
       <Controller
         control={control}
         rules={{ required: true }}
@@ -158,6 +163,7 @@ export function Create() {
       ) : null}
 
       <Heading title="目标" />
+
       <Controller
         control={control}
         rules={{ required: true }}
@@ -175,13 +181,16 @@ export function Create() {
       />
 
       {fields.map((field, index) => (
-        <View key={field.id} className="gap-3 rounded-2xl bg-surface-lightest dark:bg-surface-light p-3">
+        <View key={field.id} className="gap-3 rounded-3xl bg-surface-lightest p-3">
           <View className="flex-row items-center justify-between">
-            <Text className="text-base font-semibold text-text-primary dark:text-text-primary">
+            <Text className="text-base font-semibold text-text-primary">
               目标 {index + 1}
             </Text>
             {fields.length > 1 ? (
-              <Pressable className="rounded-full px-3 py-1 active:bg-surface-light" onPress={() => remove(index)}>
+              <Pressable
+                className="rounded-full px-3 py-1 active:bg-surface-light"
+                onPress={() => remove(index)}
+              >
                 <Text className="text-sm font-medium text-error">删除</Text>
               </Pressable>
             ) : null}
@@ -210,13 +219,7 @@ export function Create() {
               required: true,
             }}
             render={({ field: { onChange, onBlur, value } }) => (
-              <Input
-                keyboardType="number-pad"
-                placeholder="请输入目标值"
-                onBlur={onBlur}
-                onChangeText={(nextValue) => onChange(nextValue ? Number(nextValue) : undefined)}
-                value={value == null ? "" : `${value}`}
-              />
+              <InputNumber placeholder="请输入目标值" onBlur={onBlur} onValueChange={onChange} value={value} min={0} />
             )}
             name={`targets.${index}.targetValue`}
           />
@@ -241,10 +244,10 @@ export function Create() {
       ))}
 
       <Pressable
-        className="items-center rounded-2xl border border-dashed border-border px-4 py-3 active:bg-surface-light"
+        className="items-center rounded-3xl border border-dashed border-border px-4 py-3 active:bg-surface-light"
         onPress={() => append({ targetType: "frequency", targetValue: 1, operator: "gte" })}
       >
-        <Text className="text-base font-medium text-primary-dark dark:text-primary-dark">添加目标</Text>
+        <Text className="text-base font-medium text-primary-dark">添加目标</Text>
       </Pressable>
 
       <View className="py-6">

@@ -26,11 +26,11 @@ export function DateField({ label, value, onChange }: DateFieldProps) {
   return (
     <>
       <Pressable
-        className="flex-row items-center justify-between rounded-2xl bg-surface-light dark:bg-surface-dark px-4 py-3"
+        className="flex-row items-center justify-between rounded-3xl bg-surface-light px-5 py-3"
         onPress={() => setOpen(true)}
       >
-        <Text className="text-base text-text-primary dark:text-text-primary">{label}</Text>
-        <Text className="text-base font-medium text-primary-light dark:text-primary-dark">
+        <Text className="text-base text-text-primary">{label}</Text>
+        <Text className="text-base font-medium text-primary">
           {getDisplayValue(value)}
         </Text>
       </Pressable>
@@ -38,7 +38,7 @@ export function DateField({ label, value, onChange }: DateFieldProps) {
       <Modal transparent visible={open} animationType="fade" onRequestClose={() => setOpen(false)}>
         <View className="flex-1 items-center justify-center bg-black/40 px-6">
           <Pressable className="absolute inset-0" onPress={() => setOpen(false)} />
-          <View className="w-full max-w-md overflow-hidden rounded-3xl bg-surface-lightest dark:bg-surface-light shadow-lg">
+          <View className="w-full max-w-md overflow-hidden rounded-3xl bg-surface-lightest shadow-lg">
             <DateWheelPicker
               value={value || getTodayString()}
               onCancel={() => setOpen(false)}

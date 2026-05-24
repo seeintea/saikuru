@@ -31,6 +31,7 @@ server/
 ### Git
 - Do **not** read `pnpm-lock.yaml` or other lock files when analyzing diffs.
 - Use conventional commits: `feat:`, `fix:`, `refactor:`, `chore:`.
+- For non-trivial commits, use a concise conventional commit title followed by bullet points describing the concrete changes.
 
 ### Features
 - Co-locate components, hooks, and types within a feature directory (e.g. `features/dark-mode/`).

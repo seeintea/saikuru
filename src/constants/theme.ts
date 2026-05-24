@@ -5,10 +5,10 @@
 
 export const Colors = {
   light: {
-    primaryLight: "#d4ff33",
-    primary: "#c6fd00",
-    primaryDark: "#3a4d05",
-    primaryBg: "#f9ffd1",
+    primaryLight: "#dbeaa3",
+    primary: "#5f7f00",
+    primaryDark: "#263800",
+    primaryBg: "#f3f8dd",
     primaryText: "#000000",
     surfaceLightest: "#ffffff",
     surfaceLighter: "#f5f6f7",
@@ -66,8 +66,10 @@ export type ColorsObject = Record<ThemeColor, string>;
 
 export const ThemeVariables = {
   light: {
-    "--primary-dark": "#3a4d05",
-    "--primary-bg": "#f9ffd1",
+    "--primary-light": "#dbeaa3",
+    "--primary": "#5f7f00",
+    "--primary-dark": "#263800",
+    "--primary-bg": "#f3f8dd",
     "--primary-text": "#000000",
     "--surface-lightest": "#ffffff",
     "--surface-lighter": "#f5f6f7",
@@ -87,6 +89,8 @@ export const ThemeVariables = {
     "--scrim": "#00000033",
   },
   dark: {
+    "--primary-light": "#d4ff33",
+    "--primary": "#c6fd00",
     "--primary-dark": "#f9ffd1",
     "--primary-bg": "#1a1c0e",
     "--primary-text": "#000000",

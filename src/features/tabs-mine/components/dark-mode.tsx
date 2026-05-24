@@ -15,9 +15,9 @@ export function DarkMode() {
 
   return (
     <Pressable className="flex flex-row items-center justify-between" onPress={handleToggle}>
-      <Text className="font-bold">深色模式</Text>
+      <Text className="font-bold text-text-primary">深色模式</Text>
       <View className="flex flex-row items-center">
-        <Text>{currentText}</Text>
+        <Text className={"text-text-primary"}>{currentText}</Text>
         <ChevronRight />
       </View>
     </Pressable>

@@ -6,8 +6,8 @@
 
 @theme {
   /* --- 固定不变的颜色 --- */
-  --color-primary-light: #d4ff33;
-  --color-primary: #c6fd00;
+  --color-primary-light: var(--primary-light);
+  --color-primary: var(--primary);
   --color-success: #22c55e;
   --color-warning: #f59e0b;
   --color-error: #ef4444;

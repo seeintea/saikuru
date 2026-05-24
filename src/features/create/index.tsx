@@ -1,7 +1,8 @@
 import { DateField } from "@/components/date-field";
+import { Input } from "@/components/input";
 import { Segmented } from "@/components/segmented";
 import { Controller, useFieldArray, useForm, useWatch } from "react-hook-form";
-import { Button, Pressable, ScrollView, Text, TextInput, View } from "react-native";
+import { Button, Pressable, ScrollView, Text, View } from "react-native";
 import { Heading } from "./components/heading";
 import type { CreateFormItem } from "./data";
 
@@ -69,7 +70,7 @@ export function Create() {
           required: true,
         }}
         render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput placeholder="请输入任务名称" onBlur={onBlur} onChangeText={onChange} value={value} />
+          <Input placeholder="请输入任务名称" onBlur={onBlur} onChangeText={onChange} value={value} />
         )}
         name="name"
       />
@@ -79,7 +80,7 @@ export function Create() {
           required: true,
         }}
         render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput placeholder="请输入任务描述" onBlur={onBlur} onChangeText={onChange} value={value} />
+          <Input placeholder="请输入任务描述" onBlur={onBlur} onChangeText={onChange} value={value} />
         )}
         name="description"
       />
@@ -209,12 +210,12 @@ export function Create() {
               required: true,
             }}
             render={({ field: { onChange, onBlur, value } }) => (
-              <TextInput
+              <Input
                 keyboardType="number-pad"
                 placeholder="请输入目标值"
                 onBlur={onBlur}
-                onChangeText={(nextValue) => onChange(Number(nextValue))}
-                value={`${value}`}
+                onChangeText={(nextValue) => onChange(nextValue ? Number(nextValue) : undefined)}
+                value={value == null ? "" : `${value}`}
               />
             )}
             name={`targets.${index}.targetValue`}

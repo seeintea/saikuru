@@ -3,6 +3,7 @@ import { DateField } from "@/components/date-field";
 import { Input } from "@/components/input";
 import { InputNumber } from "@/components/input-number";
 import { Segmented } from "@/components/segmented";
+import { Select } from "@/components/select";
 import { Controller, useFieldArray, useForm, useWatch } from "react-hook-form";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { Heading } from "./components/heading";
@@ -13,30 +14,6 @@ function getTodayString() {
   return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(
     today.getDate()
   ).padStart(2, "0")}`;
-}
-
-function getCycleLengthOptions(cycleType: CreateFormItem["cycleType"]) {
-  if (cycleType === "weeks") {
-    return [
-      { label: "每周", value: "1" },
-      { label: "每 2 周", value: "2" },
-      { label: "每 3 周", value: "3" },
-    ];
-  }
-
-  if (cycleType === "months") {
-    return [
-      { label: "每月", value: "1" },
-      { label: "每 2 月", value: "2" },
-      { label: "每 3 月", value: "3" },
-    ];
-  }
-
-  return [
-    { label: "每天", value: "1" },
-    { label: "每 2 天", value: "2" },
-    { label: "每 3 天", value: "3" },
-  ];
 }
 
 export function Create() {
@@ -55,7 +32,6 @@ export function Create() {
   });
 
   const { fields, append, remove } = useFieldArray({ control, name: "targets" });
-  const cycleType = useWatch({ control, name: "cycleType" });
   const isInfinite = useWatch({ control, name: "isInfinite" });
   const onSubmit = (data: CreateFormItem) => console.log(data);
 
@@ -90,35 +66,43 @@ export function Create() {
 
       <Heading title="周期" />
 
-      <Controller
-        control={control}
-        rules={{ required: true }}
-        render={({ field: { onChange, value } }) => (
-          <Segmented
-            value={value}
-            onValueChange={onChange}
-            options={[
-              { label: "天", value: "days" },
-              { label: "周", value: "weeks" },
-              { label: "月", value: "months" },
-            ]}
+      <View className="flex-row items-center gap-3">
+        <View className="flex-1">
+          <Controller
+            control={control}
+            rules={{ required: true }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <InputNumber
+                placeholder="请输入周期"
+                onBlur={onBlur}
+                onValueChange={onChange}
+                value={value}
+                min={1}
+              />
+            )}
+            name="cycleLength"
           />
-        )}
-        name="cycleType"
-      />
+        </View>
 
-      <Controller
-        control={control}
-        rules={{ required: true }}
-        render={({ field: { onChange, value } }) => (
-          <Segmented
-            value={`${value}`}
-            onValueChange={(nextValue) => onChange(Number(nextValue))}
-            options={getCycleLengthOptions(cycleType)}
+        <View className="w-28">
+          <Controller
+            control={control}
+            rules={{ required: true }}
+            render={({ field: { onChange, value } }) => (
+              <Select
+                value={value}
+                onValueChange={onChange}
+                options={[
+                  { label: "天", value: "days" },
+                  { label: "周", value: "weeks" },
+                  { label: "月", value: "months" },
+                ]}
+              />
+            )}
+            name="cycleType"
           />
-        )}
-        name="cycleLength"
-      />
+        </View>
+      </View>
 
       <Controller
         control={control}
@@ -213,33 +197,39 @@ export function Create() {
             name={`targets.${index}.targetType`}
           />
 
-          <Controller
-            control={control}
-            rules={{
-              required: true,
-            }}
-            render={({ field: { onChange, onBlur, value } }) => (
-              <InputNumber placeholder="请输入目标值" onBlur={onBlur} onValueChange={onChange} value={value} min={0} />
-            )}
-            name={`targets.${index}.targetValue`}
-          />
-
-          <Controller
-            control={control}
-            rules={{ required: true }}
-            render={({ field: { onChange, value } }) => (
-              <Segmented
-                value={value}
-                onValueChange={onChange}
-                options={[
-                  { label: "至少", value: "gte" },
-                  { label: "最多", value: "lte" },
-                  { label: "刚好", value: "eq" },
-                ]}
+          <View className="flex-row items-center gap-3">
+            <View className="w-28">
+              <Controller
+                control={control}
+                rules={{ required: true }}
+                render={({ field: { onChange, value } }) => (
+                  <Select
+                    value={value}
+                    onValueChange={onChange}
+                    options={[
+                      { label: "至少", value: "gte" },
+                      { label: "最多", value: "lte" },
+                      { label: "刚好", value: "eq" },
+                    ]}
+                  />
+                )}
+                name={`targets.${index}.operator`}
               />
-            )}
-            name={`targets.${index}.operator`}
-          />
+            </View>
+
+            <View className="flex-1">
+              <Controller
+                control={control}
+                rules={{
+                  required: true,
+                }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <InputNumber placeholder="请输入目标值" onBlur={onBlur} onValueChange={onChange} value={value} min={0} />
+                )}
+                name={`targets.${index}.targetValue`}
+              />
+            </View>
+          </View>
         </View>
       ))}
 

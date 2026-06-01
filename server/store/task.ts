@@ -7,6 +7,9 @@ import type { Task, CreateTaskInput, UpdateTaskInput } from "@server/models";
 import type { CreateTaskTargetInput } from "@server/models/task-target";
 import type { CreateTaskGoalInput } from "@server/models/task-goal";
 
+type CreateNestedTaskTargetInput = Omit<CreateTaskTargetInput, "taskId">;
+type CreateNestedTaskGoalInput = Omit<CreateTaskGoalInput, "taskId">;
+
 export async function getAllTasks(): Promise<Task[]> {
   const db = await getDatabase();
   const rows = await db.getAllAsync<Task>(
@@ -69,8 +72,8 @@ export async function getTaskById(id: string): Promise<Task | null> {
 
 export async function createTask(
   input: CreateTaskInput,
-  targets?: CreateTaskTargetInput[],
-  goals?: CreateTaskGoalInput[]
+  targets?: CreateNestedTaskTargetInput[],
+  goals?: CreateNestedTaskGoalInput[]
 ): Promise<Task> {
   const db = await getDatabase();
   const id = crypto.randomUUID();

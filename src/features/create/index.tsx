@@ -4,8 +4,11 @@ import { Input } from "@/components/input";
 import { InputNumber } from "@/components/input-number";
 import { Segmented } from "@/components/segmented";
 import { Select } from "@/components/select";
+import type { CreateTaskInput } from "@server/models/task";
+import { createTask } from "@server/store/task";
+import { useRouter } from "expo-router";
 import { Controller, useFieldArray, useForm, useWatch } from "react-hook-form";
-import { Pressable, ScrollView, Text, View } from "react-native";
+import { Alert, Pressable, ScrollView, Text, View } from "react-native";
 import { Heading } from "./components/heading";
 import type { CreateFormItem } from "./data";
 
@@ -17,7 +20,13 @@ function getTodayString() {
 }
 
 export function Create() {
-  const { control, handleSubmit, setValue } = useForm<CreateFormItem>({
+  const router = useRouter();
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    formState: { isSubmitting },
+  } = useForm<CreateFormItem>({
     defaultValues: {
       name: "",
       description: "",
@@ -33,7 +42,35 @@ export function Create() {
 
   const { fields, append, remove } = useFieldArray({ control, name: "targets" });
   const isInfinite = useWatch({ control, name: "isInfinite" });
-  const onSubmit = (data: CreateFormItem) => console.log(data);
+
+  const onSubmit = async (data: CreateFormItem) => {
+    const taskInput: CreateTaskInput = {
+      name: data.name.trim(),
+      description: data.description.trim() || null,
+      icon: null,
+      color: null,
+      cycleType: data.cycleType,
+      cycleLength: data.cycleLength,
+      cycleStartDate: data.cycleStartDate,
+      isInfinite: data.isInfinite,
+      taskEndDate: data.isInfinite ? null : data.taskEndDate ?? null,
+      targetLogic: data.targetLogic,
+      isActive: true,
+    };
+
+    const targets = data.targets.map((target) => ({
+      targetType: target.targetType,
+      targetValue: target.targetValue,
+      operator: target.operator,
+    }));
+
+    try {
+      await createTask(taskInput, targets);
+      router.back();
+    } catch (error) {
+      Alert.alert("创建失败", error instanceof Error ? error.message : "请稍后重试");
+    }
+  };
 
   return (
     <ScrollView
@@ -47,6 +84,7 @@ export function Create() {
         control={control}
         rules={{
           required: true,
+          validate: (value) => value.trim().length > 0,
         }}
         render={({ field: { onChange, onBlur, value } }) => (
           <Input placeholder="请输入任务名称" onBlur={onBlur} onChangeText={onChange} value={value} />
@@ -224,7 +262,7 @@ export function Create() {
                   required: true,
                 }}
                 render={({ field: { onChange, onBlur, value } }) => (
-                  <InputNumber placeholder="请输入目标值" onBlur={onBlur} onValueChange={onChange} value={value} min={0} />
+                  <InputNumber placeholder="请输入目标值" onBlur={onBlur} onValueChange={onChange} value={value} min={1} />
                 )}
                 name={`targets.${index}.targetValue`}
               />
@@ -241,7 +279,11 @@ export function Create() {
       </Pressable>
 
       <View className="py-6">
-        <Button title="提交" onPress={handleSubmit(onSubmit)} />
+        <Button
+          title={isSubmitting ? "提交中..." : "提交"}
+          disabled={isSubmitting}
+          onPress={handleSubmit(onSubmit)}
+        />
       </View>
     </ScrollView>
   );

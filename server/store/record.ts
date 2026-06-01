@@ -6,6 +6,36 @@ import { getDatabase } from "@server/db/connection";
 import type { DailyRecord, CreateRecordInput, UpdateRecordInput } from "@server/models";
 import { recomputeGoalProgress } from "./task-goal";
 
+export interface RecordListItem extends DailyRecord {
+  taskName: string;
+  taskIcon: string | null;
+  taskColor: string | null;
+}
+
+export async function getAllRecords(limit = 100, offset = 0): Promise<RecordListItem[]> {
+  const db = await getDatabase();
+  return db.getAllAsync<RecordListItem>(
+    `SELECT
+      r.id,
+      r.task_id AS taskId,
+      r.date,
+      r.count,
+      r.duration,
+      r.notes,
+      r.created_at AS createdAt,
+      r.updated_at AS updatedAt,
+      t.name AS taskName,
+      t.icon AS taskIcon,
+      t.color AS taskColor
+    FROM daily_records r
+    JOIN tasks t ON t.id = r.task_id
+    ORDER BY r.date DESC, r.created_at DESC
+    LIMIT ? OFFSET ?`,
+    limit,
+    offset
+  );
+}
+
 export async function getRecordsByTaskAndDate(
   taskId: string,
   date: string

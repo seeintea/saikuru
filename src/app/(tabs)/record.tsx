@@ -1,10 +1,10 @@
 import { BackgroundView } from "@/components/background-view";
-import { Text } from "react-native";
+import Record from "@/features/record";
 
 export default function RecordScreen() {
   return (
     <BackgroundView>
-      <Text className="text-amber-400"> record index </Text>
+      <Record />
     </BackgroundView>
   );
 }
